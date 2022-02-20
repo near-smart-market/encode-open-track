@@ -1,5 +1,5 @@
 ## Account details
-*create accounts using 12 word passphrase and save it in accounts-local.md*
+See kurtosis-new.md to set up accounts and fund them 1000 N
 
 ### Stores
 fabrics-delivery.test.near
