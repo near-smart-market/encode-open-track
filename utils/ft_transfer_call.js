@@ -1,0 +1,1 @@
+// Transfer funds from customer account to the contract account
