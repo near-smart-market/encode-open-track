@@ -1,0 +1,9 @@
+{
+    "id": "order-1",
+    "customer_account_id": "clifford.test.near",
+    "store_account_id": "fabrics-delivery.test.near",
+    "payload": {
+        "token": "usdt.test.near",
+        "amount": "100000000"
+    }
+}

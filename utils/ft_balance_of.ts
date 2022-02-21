@@ -18,6 +18,7 @@ async function execute() {
     ]);
 
     try {
+        console.log(options);
         await run(options);
     }
     catch (error) {

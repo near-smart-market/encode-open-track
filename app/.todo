@@ -1,0 +1,21 @@
+Frontend goes here.
+
+Frontend should allow stores to sign up using the wallet. 
+Stores should set up their info via store NFT
+Stores should set up their products via products NFT - these needs to be anchored using the store NFT
+
+Eg.
+Marketplace [ // collection of NFTs - one per store
+    Stores [ // collection of NFTs - one per each product of the store
+        Products // metadata can be edited and lives on the smart-contract - allows prices to change
+    ]
+]
+
+In Scope - Personally Identifiable Information must be stored off-chain. 
+
+Maybe in scope 
+- Review system. 
+- Encourage use of child accounts based off the main account ? 
+
+Out of scope - Delivery management. 
+
