@@ -1,0 +1,10 @@
+Fabrics store
+- T-shirt (model: 1000) - NFT [ price, nft_token_id ]
+- Shoes (model: 1001) - NFT [ price, nft_token_id ]
+
+
+Toy store
+- T-shirt (model: 1000) - NFT [ price, nft_token_id ]
+- xbox (model: 1001) - NFT [ price, nft_token_id ]
+
+

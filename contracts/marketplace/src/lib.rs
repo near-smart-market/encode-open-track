@@ -11,7 +11,7 @@ setup_alloc!();
 pub struct OrderPayload {
     token: String, // This is the stablecoin token - we'll know if it is usdt or inr, cad etc.
     amount: String, // this is how much we received in the stablecoin
-    // line_items: LineItem[] // this will contain order details, like shoes - 10, t-shirts 20
+    // line_items: LineItem[] // this will contain order details, like shoes - <NFT_ID_FOR_SHOES>, t-shirts <NFT_ID_FOR_TSHIRT>
 }
 
 #[derive(BorshDeserialize, BorshSerialize, Deserialize, Serialize)]
@@ -29,7 +29,8 @@ pub struct Order {
 #[near_bindgen]
 #[derive(BorshDeserialize, BorshSerialize)]
 pub struct Marketplace {
-    orders: LookupMap<String, Order>
+    orders: LookupMap<String, Order>,
+    // TODO: products LookupMap<String, Product>, // how to lookup map with set of 2 values by joining storeId+productId
 }
 
 impl Default for Marketplace {
@@ -52,6 +53,11 @@ impl Marketplace {
         let order: Order = near_sdk::serde_json::from_str(&msg).unwrap();
         env::log(format!("ft_on_transfer: order.id {}", order.id.to_string()).as_bytes());
         
+        // Verify that payload amount is same as the amount received
+        // order.payload.amount == amount
+
+        // verify that order.payload.lineitems[].amount adds up to amount
+
         // TODO: validate msg deserializes to an Order struct
         // TODO: Save the order to the self.orders
         // TODO: return 0 - keep all funds - for now; or return funds if more than necessary are provided
