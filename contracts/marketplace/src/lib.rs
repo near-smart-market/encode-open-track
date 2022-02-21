@@ -9,8 +9,9 @@ setup_alloc!();
 #[derive(BorshDeserialize, BorshSerialize, Deserialize, Serialize)]
 #[serde(crate = "near_sdk::serde")]
 pub struct OrderPayload {
-    token: String,
-    amount: String,
+    token: String, // This is the stablecoin token - we'll know if it is usdt or inr, cad etc.
+    amount: String, // this is how much we received in the stablecoin
+    // line_items: LineItem[] // this will contain order details, like shoes - 10, t-shirts 20
 }
 
 #[derive(BorshDeserialize, BorshSerialize, Deserialize, Serialize)]
