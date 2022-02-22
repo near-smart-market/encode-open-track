@@ -1,15 +1,24 @@
 Frontend goes here.
 
 Frontend should allow stores to sign up using the wallet. 
++ API ref. to near api js (link)[https://docs.near.org/docs/api/naj-quick-reference]
++ React+TS in frontend. 
 
 Frontend should allow integrating with smart contract - create store record; create product catalog.
-
++ Only focusing front end for sellers right now. (Aka product listers).
 
 In Scope - Personally Identifiable Information must be stored off-chain. 
++ PII if needed to be stored offchain, good alternatives are IPFS . 
++ One method can be to encrypt from a keypair's private key and store that encrypted form (link)[https://www.preveil.com/blog/public-and-private-key/]
+    + With private key encrypt and decrypt.
+    + Maybe can make some encoding mechanism, out of scope may maybenot ??
+    +
 
 Maybe in scope 
 - Review system. 
+    + Probably something to keep in mind, but not for this hack ??.
 - Encourage use of child accounts based off the main account ? 
+    + Yup use of child account will be better as they will be derived from main account, more easier to keep track of from their main accounts. Needed more thought in this. 
 
 Out of scope - Delivery management. 
 
