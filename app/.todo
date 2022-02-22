@@ -1,15 +1,9 @@
 Frontend goes here.
 
 Frontend should allow stores to sign up using the wallet. 
-Stores should set up their info via store NFT
-Stores should set up their products via products NFT - these needs to be anchored using the store NFT
 
-Eg.
-Marketplace [ // collection of NFTs - one per store
-    Stores [ // collection of NFTs - one per each product of the store
-        Products // metadata can be edited and lives on the smart-contract - allows prices to change
-    ]
-]
+Frontend should allow integrating with smart contract - create store record; create product catalog.
+
 
 In Scope - Personally Identifiable Information must be stored off-chain. 
 
