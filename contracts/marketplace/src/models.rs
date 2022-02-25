@@ -1,4 +1,5 @@
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
+use near_sdk::collections::UnorderedSet;
 use near_sdk::json_types::U128;
 use near_sdk::serde::{Deserialize, Serialize};
 use near_sdk::BorshStorageKey;
@@ -49,7 +50,14 @@ pub struct Store {
 pub struct OrderPayload {
     pub token: String, // This is the stablecoin token - we'll know if it is usdt or inr, cad etc.
     pub amount: String, // this is how much we received in the stablecoin
-                   // line_items: LineItem[] // this will contain order details, like shoes - <NFT_ID_FOR_SHOES>, t-shirts <NFT_ID_FOR_TSHIRT>
+    pub line_items: Vec<LineItem>,
+}
+
+#[derive(BorshDeserialize, BorshSerialize, Deserialize, Serialize)]
+#[serde(crate = "near_sdk::serde")]
+pub struct LineItem {
+    pub product_id: String,
+    pub count: i32,
 }
 
 #[derive(BorshDeserialize, BorshSerialize, Deserialize, Serialize)]
