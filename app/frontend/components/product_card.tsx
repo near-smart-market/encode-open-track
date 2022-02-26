@@ -1,5 +1,5 @@
 import ImageSlider from "./image_slider";
-import Slider, { Slide } from "./image_slider";
+import  { Slide } from "./image_slider";
 
 const ProductCard = () => {
   const slides: Array<Slide> = [
@@ -12,6 +12,11 @@ const ProductCard = () => {
       img: "https://picsum.photos/300/300",
       title: "Image 2",
       body: "This is Image 2",
+    },
+    {
+      img: "https://picsum.photos/300/500",
+      title: "Image 3",
+      body: "This is Image 3",
     },
   ];
 
