@@ -5,15 +5,15 @@ use near_sdk::env::STORAGE_PRICE_PER_BYTE;
 use near_sdk::serde::{Deserialize, Serialize};
 use near_sdk::{env, near_bindgen, setup_alloc};
 
-use crate::models::*;
-use crate::utils::*;
 use crate::internal_products::*;
 use crate::internal_stores::*;
+use crate::models::*;
+use crate::utils::*;
 
-mod models;
-mod utils;
 mod internal_products;
 mod internal_stores;
+mod models;
+mod utils;
 
 // Structs in Rust are similar to other languages, and may include impl keyword as shown below
 // Note: the names of the structs are not important when calling the smart contract, but the function names are
@@ -61,7 +61,7 @@ impl Marketplace {
     assert_eq!(order.payload.amount, amount);
 
     // Verify that the products are valid
-    // TODO: Consider stronger checks. 
+    // TODO: Consider stronger checks.
     for line_item in order.payload.line_items.iter() {
       let id = format!("{}:{}", order.store_account_id, line_item.product_id);
       self.products.get(&id).expect("Product does not exist");
@@ -73,4 +73,5 @@ impl Marketplace {
     self.orders.insert(&order.id, &order);
     "0".to_string() // funds to return
   }
+  
 }

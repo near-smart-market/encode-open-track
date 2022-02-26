@@ -1,17 +1,30 @@
 use crate::*;
 
+#[near_bindgen]
 impl Marketplace {
     // TODO: Storage management, assert_one_yocto, etc.
-    pub fn create_store(&mut self, store: Store) {
+    #[payable]
+    pub fn create_store(&mut self, store: Store) -> String {
+        assert_one_yocto();
         // check unique storeid
+        assert!(
+            env::predecessor_account_id() == store.id,
+            "Store ID must match the account name"
+        );
+
         let existing_store = self.stores.get(&store.id);
         assert!(existing_store.is_none(), "Store with ID already exists");
 
         self.stores.insert(&store.id, &store);
+
+        "OK".to_string()
     }
     pub fn retrieve_store(self, id: String) -> Option<Store> {
         let store = self.stores.get(&id);
         store
+    }
+    pub fn list_stores(self) -> Vec<Store> {
+        self.stores.values().collect()
     }
 
     pub fn update_store(

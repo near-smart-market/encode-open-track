@@ -1,7 +1,9 @@
 use crate::*;
 
+#[near_bindgen]
 impl Marketplace {
-    pub fn create_product(&mut self, product: Product) {
+    #[payable]
+    pub fn create_product(&mut self, product: Product) -> String {
         assert_one_yocto();
         let store = self
             .stores
@@ -9,6 +11,7 @@ impl Marketplace {
             .expect("Store does not exist");
         let id = format!("{}:{}", store.id, product.id);
         self.products.insert(&id, &product);
+        id.to_string()
     }
     pub fn retrieve_product(self, id: String) -> Option<Product> {
         self.products.get(&id)
@@ -19,6 +22,7 @@ impl Marketplace {
         store_account_id: String,
         description: Option<String>,
         media_url: Option<String>,
+        name: Option<String>,
         price: Option<u128>,
     ) -> String {
         self.stores
@@ -35,6 +39,10 @@ impl Marketplace {
         }
         match price {
             Some(x) => product.price = x,
+            None => {}
+        }
+        match name {
+            Some(x) => product.name = x,
             None => {}
         }
         let id = format!("{}:{}", store_account_id, product.id);

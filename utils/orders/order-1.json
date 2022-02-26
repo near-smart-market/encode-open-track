@@ -4,6 +4,7 @@
     "store_account_id": "fabrics-delivery.test.near",
     "payload": {
         "token": "usdt.test.near",
-        "amount": "100000000"
+        "amount": "100000000",
+        "line_items": []
     }
 }

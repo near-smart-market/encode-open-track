@@ -26,7 +26,8 @@ pub struct Product {
     pub store_account_id: String,
     pub description: String,
     pub media_url: String,
-    pub price: u128,
+    pub price: u128, // Assume USDT for now
+    pub name: String,
 }
 
 #[derive(BorshDeserialize, BorshSerialize, Deserialize, Serialize)]
@@ -67,4 +68,5 @@ pub struct Order {
     pub customer_account_id: String,
     pub store_account_id: String,
     pub payload: OrderPayload,
+    pub status: String,
 }
