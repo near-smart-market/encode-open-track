@@ -5,6 +5,8 @@ import ProductCard from "./product_card";
 import { getProduct } from "../utils/fakeData";
 import { useState, useEffect } from "react";
 
+
+
 const Products = () => {
   const [products, setProducts] = useState<Array<any>>([]);
 
@@ -17,33 +19,16 @@ const Products = () => {
     setProducts(prods);
   }, []);
 
-  const slides: Array<Slide> = [
-    {
-      img: "https://picsum.photos/300/400",
-      title: "Image 1",
-      body: "This is Image 1",
-    },
-    {
-      img: "https://picsum.photos/300/300",
-      title: "Image 2",
-      body: "This is Image 2",
-    },
-    {
-      img: "https://picsum.photos/300/500",
-      title: "Image 3",
-      body: "This is Image 3",
-    },
-  ];
-
   const handleCartAdd = (id: any) => {
     console.log(id);
   };
+  
   return (
     <div className="grid gap-4 grid-cols-3">
         {
             products.map((product) => {
                 return <ProductCard
-                    key={product.id}
+                    key={product.id + product.name}
                     id={product.id}
                     name={product.name}
                     inventory={product.inventory}

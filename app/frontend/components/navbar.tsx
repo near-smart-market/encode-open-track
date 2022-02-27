@@ -28,7 +28,7 @@ const Navbar = () => {
         {/* <!-- navbar --> */}
         <nav className="flex justify-between bg-gray-900 text-white w-100">
           <div className="px-5 xl:px-12 py-6 flex w-full items-center">
-            <a className="text-3xl font-bold font-heading" href="#">
+            <a className="text-3xl font-bold font-heading" href="/">
               {/* <!-- <img className="h-9" src="logo.png" alt="logo"> --> */}
               Nearbay.
             </a>
@@ -52,10 +52,10 @@ const Navbar = () => {
             </ul>
             {/* <!-- Header Icons --> */}
             <div className="hidden xl:flex items-center space-x-5">
-              <a className="hover:text-gray-200" href="#">
+              {/* <a className="hover:text-gray-200" href="#">
                 <Heart />
-              </a>
-              <a className="flex items-center hover:text-gray-200" href="#">
+              </a> */}
+              <a className="flex items-center hover:text-gray-200" href="/cart">
                 <ShoppingCart />
                 <span className="flex absolute -mt-5 ml-4">
                   <span className="animate-ping absolute inline-flex h-3 w-3 rounded-full bg-pink-400 opacity-75"></span>

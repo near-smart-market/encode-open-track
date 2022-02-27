@@ -13,10 +13,13 @@ export type ProductDetails = {
   inventory: number,
   description: string,
   slides: Array<Slide>,
+}
+
+export type Props  = ProductDetails & {
   handleCartAdd: (id: any) => any,
 }
 
-const ProductCard: FC<ProductDetails> = ({
+const ProductCard: FC<Props> = ({
   id,
   name,
   price,
