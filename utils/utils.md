@@ -49,6 +49,10 @@ TODO
 ## complete_order
 `npx ts-node marketplace_complete_order.ts -c marketplace.test.near -a fabrics-delivery.test.near -o fabrics-delivery.test.near:order-1`
 
+## schedule_order
+`npx ts-node marketplace_schedule_order.ts -c marketplace.test.near -a fabrics-delivery.test.near -o fabrics-delivery.test.near:order-1`
+
+
 ## cancel_order
 `npx ts-node marketplace_cancel_order.ts -c marketplace.test.near -a fabrics-delivery.test.near -o fabrics-delivery.test.near:order-1`
 
