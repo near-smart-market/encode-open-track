@@ -1,4 +1,6 @@
 import type { NextPage } from "next";
+import { initContract } from "../utils/utils";
+import React from 'react';
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
@@ -9,6 +11,12 @@ import Navbar from "../components/navbar";
 import ProductCard from "../components/product_card";
 
 const Home: NextPage = () => {
+
+  React.useEffect(() => {
+    window.nearInitPromise = initContract()
+
+  })
+
   return (
     <div className="w-100 flex flex-col items-center">
       <Head>

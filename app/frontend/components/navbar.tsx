@@ -1,8 +1,27 @@
+import React from "react";
+
 import Heart from "../icons/heart";
 import ShoppingCart from "../icons/shopping_cart";
 import UserIcon from "../icons/user_icon";
 
+import { login, logout } from "../utils/utils";
+
+import { getConfig } from "../utils/config";
+const { networkId } = getConfig(process.env.NODE_ENV || "development");
+
 const Navbar = () => {
+  const [loggedIn, setLoggedIn] = React.useState(false);
+
+  React.useEffect(() => {
+    if (typeof window !== undefined) {
+      if (window.walletConnection && window.walletConnection.isSignedIn()) {
+        setLoggedIn(true)
+      } else {
+        setLoggedIn(false);
+      }
+    }
+  });
+
   return (
     <div className="flex flex-wrap place-items-center w-full">
       <section className="relative mx-auto w-full">
@@ -44,9 +63,13 @@ const Navbar = () => {
                 </span>
               </a>
               {/* <!-- Sign In / Register      --> */}
-              <a className="flex items-center hover:text-gray-200" href="#">
-                <UserIcon />
-              </a>
+              {!loggedIn ? (
+                <a className="flex items-center hover:text-gray-200" href="#" onClick={login}>
+                  <UserIcon />
+                </a>
+              ) : (
+                <button className="hover:bg-white hover:text-black pl-5 pr-5 rounded" onClick={logout}>Logout</button>
+              )}
             </div>
           </div>
           {/* <!-- Responsive navbar --> */}
