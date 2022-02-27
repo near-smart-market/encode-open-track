@@ -63,10 +63,16 @@ pub struct LineItem {
 
 #[derive(BorshDeserialize, BorshSerialize, Deserialize, Serialize)]
 #[serde(crate = "near_sdk::serde")]
+pub enum OrderStatus {
+    PENDING, SCHEDULED, COMPLETED, CANCELLED
+}
+
+#[derive(BorshDeserialize, BorshSerialize, Deserialize, Serialize)]
+#[serde(crate = "near_sdk::serde")]
 pub struct Order {
     pub id: String,
     pub customer_account_id: String,
     pub store_account_id: String,
     pub payload: OrderPayload,
-    pub status: String,
+    pub status: OrderStatus,
 }

@@ -7,11 +7,13 @@ use near_sdk::{env, near_bindgen, setup_alloc};
 
 use crate::internal_products::*;
 use crate::internal_stores::*;
+use crate::internal_orders::*;
 use crate::models::*;
 use crate::utils::*;
 
 mod internal_products;
 mod internal_stores;
+mod internal_orders;
 mod models;
 mod utils;
 
@@ -70,7 +72,8 @@ impl Marketplace {
     // TODO: validate msg deserializes to an Order struct
     // TODO: Save the order to the self.orders
     // TODO: return 0 - keep all funds - for now; or return funds if more than necessary are provided
-    self.orders.insert(&order.id, &order);
+    let id = format!("{}:{}", order.store_account_id, order.id);
+    self.orders.insert(&id, &order);
     "0".to_string() // funds to return
   }
   

@@ -54,4 +54,12 @@ impl Marketplace {
         // TODO: Delete all products
         // TODO: Refund storage
     }
+
+    pub fn list_store_products(self, id: String) -> Vec<Product> {
+        self.stores.get(&id).expect("Store does not exist");
+        self.products
+            .values()
+            .filter(|x| x.store_account_id == id)
+            .collect()
+    }
 }

@@ -12,7 +12,7 @@
 # Interact with marketplace
 
 ## create_store
-`npx ts-node markerplace_create_store.ts -c marketplace.test.near -a fabrics-delivery.test.near -p stores/fabrics-delivery.test.near.json`
+`npx ts-node marketplace_create_store.ts -c marketplace.test.near -a fabrics-delivery.test.near -p stores/fabrics-delivery.test.near.json`
 
 ## retrieve_store
 `npx ts-node marketplace_retrieve_store.ts -a fabrics-delivery.test.near`
@@ -20,7 +20,7 @@
 ## list_stores
 `npx ts-node marketplace_list_stores.ts -a fabrics-delivery.test.near`
 
-## update_stores
+## update_store
 TODO
 
 ## create_product
@@ -32,4 +32,28 @@ TODO
 `npx ts-node marketplace_retrieve_product.ts -c marketplace.test.near -a fabrics-delivery.test.near -i fabrics-delivery.test.near:product-2`
 
 ## list_store_products
-TODO
+`npx ts-node marketplace_list_store_products.ts -c marketplace.test.near -a fabrics-delivery.test.near`
+
+## create_order
+`npx ts-node ft_transfer_call.ts -c usdt.test.near -a dev0.test.near -r marketplace.test.near -o orders/order-1.json -m order-1.json -i order-1`
+
+## retrieve_order
+`npx ts-node marketplace_retrieve_order.ts -c marketplace.test.near -a fabrics-delivery.test.near -i fabrics-delivery.test.near:order-1`
+
+## list_customer_orders
+`npx ts-node marketplace_list_customer_orders.ts -c marketplace.test.near -a fabrics-delivery.test.near -i clifford.test.near`
+
+## list_store_orders
+`npx ts-node marketplace_list_store_orders.ts -c marketplace.test.near -a fabrics-delivery.test.near -i fabrics-delivery.test.near`
+
+## complete_order
+`npx ts-node marketplace_complete_order.ts -c marketplace.test.near -a fabrics-delivery.test.near -o fabrics-delivery.test.near:order-1`
+
+## cancel_order
+`npx ts-node marketplace_cancel_order.ts -c marketplace.test.near -a fabrics-delivery.test.near -o fabrics-delivery.test.near:order-1`
+
+
+# Delete contract account
+near delete marketplace.test.near test.near
+# Create marketplace.test.near
+near create-account marketplace.test.near --masterAccount test.near --initialBalance 10

@@ -7,7 +7,7 @@ echo "Creating Customers"
 near create-account clifford.$ID --masterAccount $ID --initialBalance 1000
 
 echo "Creating marketplace"
-near create-account marketplace.$ID --masterAccount $ID --initialBalance 1000
+near create-account marketplace.test.near --masterAccount test.near --initialBalance 1000
 
 echo "Creating Stablecoins"
 near create-account usdt.$ID --masterAccount $ID --initialBalance 1000
