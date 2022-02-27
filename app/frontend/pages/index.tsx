@@ -8,7 +8,7 @@ import styles from "../styles/Home.module.css";
 import Footer from "../components/footer";
 import Navbar from "../components/navbar";
 
-import ProductCard from "../components/product_card";
+import Products from "../components/products";
 
 const Home: NextPage = () => {
 
@@ -32,9 +32,9 @@ const Home: NextPage = () => {
           <code className={styles.code}>Near Blockchain.</code>
         </p>
 
-        <div className="grid grid-cols-3 gap-4">
-          <ProductCard />
-        </div>
+        
+        <Products />
+        
       </main>
 
       

@@ -9,6 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@mdi/font": "^6.5.95",
+    "@mdi/js": "^6.5.95",
+    "@mdi/react": "^1.5.0",
+    "faker": "5.5.3",
     "near-api-js": "^0.44.2",
     "next": "12.1.0",
     "react": "17.0.2",
