@@ -15,7 +15,7 @@ const Home: NextPage = () => {
   React.useEffect(() => {
     window.nearInitPromise = initContract()
 
-  })
+  }, [])
 
   return (
     <div className="w-100 flex flex-col items-center">

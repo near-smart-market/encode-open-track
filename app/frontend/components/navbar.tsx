@@ -12,10 +12,11 @@ const { networkId } = getConfig(process.env.NODE_ENV || "development");
 const Navbar = () => {
   const [loggedIn, setLoggedIn] = React.useState(false);
 
+
   React.useEffect(() => {
     if (typeof window !== undefined) {
       if (window.walletConnection && window.walletConnection.isSignedIn()) {
-        setLoggedIn(true)
+        setLoggedIn(true);
       } else {
         setLoggedIn(false);
       }
@@ -40,13 +41,13 @@ const Navbar = () => {
                 </a>
               </li>
               <li>
-                <a className="hover:text-gray-200" href="/category">
-                  Category
+                <a className="hover:text-gray-200" href="/view">
+                  View Products
                 </a>
               </li>
               <li>
-                <a className="hover:text-gray-200" href="/collection">
-                  Collections
+                <a className="hover:text-gray-200" href="/add">
+                  Add a Product
                 </a>
               </li>
             </ul>
@@ -57,18 +58,29 @@ const Navbar = () => {
               </a> */}
               <a className="flex items-center hover:text-gray-200" href="/cart">
                 <ShoppingCart />
-                <span className="flex absolute -mt-5 ml-4">
-                  <span className="animate-ping absolute inline-flex h-3 w-3 rounded-full bg-pink-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-3 w-3 bg-pink-500"></span>
-                </span>
+                { 1 && (
+                  <span className="flex absolute -mt-5 ml-4">
+                    <span className="animate-ping absolute inline-flex h-3 w-3 rounded-full bg-pink-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-3 w-3 bg-pink-500"></span>
+                  </span>
+                )}
               </a>
               {/* <!-- Sign In / Register      --> */}
               {!loggedIn ? (
-                <a className="flex items-center hover:text-gray-200" href="#" onClick={login}>
+                <a
+                  className="flex items-center hover:text-gray-200"
+                  href="#"
+                  onClick={login}
+                >
                   <UserIcon />
                 </a>
               ) : (
-                <button className="hover:bg-white hover:text-black pl-5 pr-5 rounded" onClick={logout}>Logout</button>
+                <button
+                  className="hover:bg-white hover:text-black pl-5 pr-5 rounded"
+                  onClick={logout}
+                >
+                  Logout
+                </button>
               )}
             </div>
           </div>
@@ -88,10 +100,12 @@ const Navbar = () => {
                 d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
               />
             </svg>
-            <span className="flex absolute -mt-5 ml-4">
-              <span className="animate-ping absolute inline-flex h-3 w-3 rounded-full bg-pink-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-pink-500"></span>
-            </span>
+            { 1 && (
+              <span className="flex absolute -mt-5 ml-4">
+                <span className="animate-ping absolute inline-flex h-3 w-3 rounded-full bg-pink-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-pink-500"></span>
+              </span>
+            )}
           </a>
           <a className="navbar-burger self-center mr-12 xl:hidden" href="#">
             <svg

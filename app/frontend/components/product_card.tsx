@@ -1,23 +1,23 @@
 import ImageSlider from "./image_slider";
-import  { Slide } from "./image_slider";
+import { Slide } from "./image_slider";
 import { FC } from "react";
 import ShoppingCart from "../icons/shopping_cart";
-import Icon from '@mdi/react'
-import { mdiCartOutline } from '@mdi/js'
+import Icon from "@mdi/react";
+import { mdiCartOutline } from "@mdi/js";
 
 export type ProductDetails = {
-  id: any,
-  name: string, 
-  price: string,
-  currency: string,
-  inventory: number,
-  description: string,
-  slides: Array<Slide>,
-}
+  id: any;
+  name: string;
+  price: string;
+  currency: string;
+  inventory: number;
+  description: string;
+  slides: Array<Slide>;
+};
 
-export type Props  = ProductDetails & {
-  handleCartAdd: (id: any) => any,
-}
+export type Props = ProductDetails & {
+  handleCartAdd?: (id: any) => any;
+};
 
 const ProductCard: FC<Props> = ({
   id,
@@ -27,7 +27,7 @@ const ProductCard: FC<Props> = ({
   inventory,
   slides,
   description,
-  handleCartAdd
+  handleCartAdd,
 }) => {
   return (
     <div className="bg-grey-light py-8 w-full flex justify-center items-start top-0">
@@ -50,12 +50,17 @@ const ProductCard: FC<Props> = ({
           </div>
           <p className="text-gray-900 mt-4">{description}</p>
         </div>
-        <div className="p-6 text-grey-darker text-justify flex flex-row justify-end border-t">
-          <button className="uppercase self-end bg-green-700 font-bold text-white px-6 py-4 rounded hover:bg-green-900 transition ease-in-out delay-15 duration-4 flex" onClick={() => handleCartAdd(id)}>
-            <Icon path={mdiCartOutline}  size={1}/>
-            Add to cart
-          </button>
-        </div>
+        {handleCartAdd && (
+          <div className="p-6 text-grey-darker text-justify flex flex-row justify-end border-t">
+            <button
+              className="uppercase self-end bg-green-700 font-bold text-white px-6 py-4 rounded hover:bg-green-900 transition ease-in-out delay-15 duration-4 flex"
+              onClick={() => handleCartAdd(id)}
+            >
+              <Icon path={mdiCartOutline} size={1} />
+              Add to cart
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
