@@ -1,6 +1,7 @@
-const CONTRACT_NAME = process.env.CONTRACT_NAME ||'prix.testnet'
+const CONTRACT_NAME = process.env.CONTRACT_NAME ||'prix.test.near'
 
 function getConfig(env: any) {
+  
   switch (env) {
 
   case 'production':
@@ -35,9 +36,9 @@ function getConfig(env: any) {
   case 'local':
     return {
       networkId: 'local',
-      nodeUrl: 'http://localhost:3030',
+      nodeUrl: 'http://127.0.0.1:49158',
       keyPath: `${process.env.HOME}/.near/validator_key.json`,
-      walletUrl: 'http://localhost:4000/wallet',
+      walletUrl: 'http://127.0.0.1:49162/wallet',
       contractName: CONTRACT_NAME,
     }
   case 'test':

@@ -9,18 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@mdi/font": "^6.5.95",
     "@mdi/js": "^6.5.95",
     "@mdi/react": "^1.5.0",
-    "@reduxjs/toolkit": "^1.7.2",
     "faker": "5.5.3",
     "near-api-js": "^0.44.2",
-    "next": "12.1.0",
-    "next-redux-wrapper": "^7.0.5",
+    "next": "11.1.2",
     "react": "17.0.2",
-    "react-dom": "17.0.2",
-    "react-redux": "^7.2.6",
-    "swiper": "^8.0.6"
+    "react-dom": "17.0.2"
   },
   "devDependencies": {
     "@types/node": "17.0.19",

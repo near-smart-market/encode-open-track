@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Slide } from "./image_slider";
 import ProductCard from "./product_card";
 
@@ -6,28 +6,25 @@ import { getProduct } from "../utils/fakeData";
 import { useState, useEffect } from "react";
 import { useAppSelector } from "../hooks";
 import { addProduct as addToCart } from "../slices/cart";
-import { useDispatch } from "react-redux";
+import { useGlobalContext } from "../context/appContext";
 
 const Products = () => {
-  const marketPlaceProducts = useAppSelector(
-    (state) => state.marketplace.products
-  );
-  const dispatch = useDispatch();
+  const {
+    marketplace: { products },
+    cart,
+    setCart,
+  } = useGlobalContext();
 
   const handleCartAdd = (id: any) => {
     console.log(id);
-    const product = marketPlaceProducts.filter(
-      (product) => product.id === id
-    )[0];
+    const product = products.filter((product) => product.id === id)[0];
     console.log(product);
-    dispatch(
-      addToCart(product)
-    );
+    setCart([...cart, product]);
   };
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 grid-cols-1 p-2">
-      {marketPlaceProducts.map((product) => {
+      {products.map((product) => {
         return (
           <ProductCard
             key={product.id + product.name}

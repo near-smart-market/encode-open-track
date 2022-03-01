@@ -3,14 +3,17 @@ import type { NextPage } from "next";
 
 import { useAppSelector } from "../hooks";
 import { removeProduct } from "../slices/cart";
-import { useDispatch } from "react-redux";
+import { useGlobalContext } from "../context/appContext";
 
 const Cart: NextPage = () => {
-  const products = useAppSelector((state) => state.cart.products);
-  const dispatch = useDispatch();
+  const {
+    cart,
+    setCart,
+  } = useGlobalContext();
 
   const handleRemove = (id: string) => {
-    dispatch(removeProduct(id));
+    const newCart = cart.filter((prod) => prod.id !== id);
+    setCart([...newCart]);
   };
 
   const handleBuy = () => {
@@ -53,7 +56,7 @@ const Cart: NextPage = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {products.map((product) => {
+                  {cart.map((product) => {
                     return (
                       <tr
                         className="border-b odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700 dark:border-gray-600"
@@ -71,13 +74,12 @@ const Cart: NextPage = () => {
                           {product.price} {product.currency}
                         </td>
                         <td className="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">
-                          <a
-                            href="#"
+                          <button
                             className="text-blue-600 dark:text-blue-500 hover:underline"
                             onClick={() => handleRemove(product.id)}
                           >
                             Delete
-                          </a>
+                          </button>
                         </td>
                       </tr>
                     );
@@ -89,12 +91,12 @@ const Cart: NextPage = () => {
         </div>
       </div>
 
-      {products.length > 1 && (
+      {cart.length >= 1 && (
         <div className="w-4/5 flex flex-col justify-end items-end">
           <p className="text-right font-bold text-xl">
             Total Amount:{" "}
             {
-              products.reduce(
+              cart.reduce(
                 (prev, next) => {
                   return {
                     price: parseFloat(prev.price.toString()) + parseFloat(next.price),
@@ -103,7 +105,7 @@ const Cart: NextPage = () => {
                 { price: 0.0 }
               ).price
             }{" "}
-            {products[0].currency}
+            {cart[0].currency}
           </p>
           <button
             className="text-white bg-gray-900 rounded p-3 mt-3"

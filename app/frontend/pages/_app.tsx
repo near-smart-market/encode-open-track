@@ -1,21 +1,27 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import { Provider } from "react-redux";
-import { store } from "../store";
-import React from 'react';
+import React from "react";
 import { initContract } from "../utils/utils";
 
+import Navbar from "../components/navbar";
+import Footer from "../components/footer";
+
+import { GlobalContextWrapper} from "../context/appContext";
+
 function MyApp({ Component, pageProps }: AppProps) {
-  // const {store, props} = wrapper.useWrappedStore(rest);
 
   React.useEffect(() => {
-    window.nearInitPromise = initContract()
-
+    window.nearInitPromise = initContract();
   });
 
-  return  (<Provider store={store}>
-    <Component {...pageProps} />
-  </Provider>);
+
+  return (
+    <GlobalContextWrapper>
+      <Navbar />
+      <Component {...pageProps} />
+      <Footer />
+    </GlobalContextWrapper>
+  );
 }
 
 export default MyApp;

@@ -3,7 +3,8 @@ import { Slide } from "./image_slider";
 import { FC } from "react";
 import ShoppingCart from "../icons/shopping_cart";
 import Icon from "@mdi/react";
-import { mdiCartOutline } from "@mdi/js";
+import { mdiCartOutline, mdiCheck } from "@mdi/js";
+import { useGlobalContext } from "../context/appContext";
 
 export type ProductDetails = {
   id: any;
@@ -29,6 +30,13 @@ const ProductCard: FC<Props> = ({
   description,
   handleCartAdd,
 }) => {
+  const { cart } = useGlobalContext();
+
+  const isInCart = (id: string) => {
+    const sres = cart.filter((prod) => prod.id === id);
+    return !(sres.length > 0) 
+  }
+
   return (
     <div className="bg-grey-light py-8 w-full flex justify-center items-start top-0">
       <div className="bg-white rounded  shadow hover:shadow-md duration-4">
@@ -50,17 +58,27 @@ const ProductCard: FC<Props> = ({
           </div>
           <p className="text-gray-900 mt-4">{description}</p>
         </div>
-        {handleCartAdd && (
-          <div className="p-6 text-grey-darker text-justify flex flex-row justify-end border-t">
-            <button
-              className="uppercase self-end bg-green-700 font-bold text-white px-6 py-4 rounded hover:bg-green-900 transition ease-in-out delay-15 duration-4 flex"
-              onClick={() => handleCartAdd(id)}
-            >
-              <Icon path={mdiCartOutline} size={1} />
-              Add to cart
-            </button>
-          </div>
-        )}
+        {handleCartAdd &&
+          (isInCart(id) ? (
+            <div className="p-6 text-grey-darker text-justify flex flex-row justify-end border-t">
+              <button
+                className="uppercase self-end bg-green-700 font-bold text-white px-6 py-4 rounded hover:bg-green-900 transition ease-in-out delay-15 duration-4 flex"
+                onClick={() => handleCartAdd(id)}
+              >
+                <Icon path={mdiCartOutline} size={1} />
+                Add to cart
+              </button>
+            </div>
+          ) : (
+            <div className="p-6 text-grey-darker text-justify flex flex-row justify-end border-t">
+              <button
+                className="uppercase self-end bg-blue-700 font-bold text-white px-6 py-4 rounded hover:bg-blue-900 transition ease-in-out delay-15 duration-4 flex"
+              >
+                <Icon path={mdiCheck} size={1} />
+                Added to Cart
+              </button>
+            </div>
+          ))}
       </div>
     </div>
   );
