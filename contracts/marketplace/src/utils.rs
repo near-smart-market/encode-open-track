@@ -19,9 +19,6 @@ pub(crate) fn assert_one_yocto() {
 const BASIC_GAS: Gas = 5_000_000_000_000;
 
 pub(crate) fn transfer_funds(contract_id: &AccountId, amount: String, recipient_id: String) -> Promise {
-    // -c usdt.test.near -a dev0.test.near -r clifford.test.near --amount 100
-    // receiver_id: options.recipientName,
-    // amount: options.amount.toString()
     let method_name = b"ft_transfer".to_vec();
     let data: Vec<u8> = json!({
         "receiver_id": recipient_id,
