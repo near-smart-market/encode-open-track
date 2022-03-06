@@ -1,19 +1,21 @@
 // To conserve gas, efficient serialization is achieved through Borsh (http://borsh.io/)
+use assert_panic::assert_panic;
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
 use near_sdk::collections::{UnorderedMap, UnorderedSet};
 use near_sdk::env::STORAGE_PRICE_PER_BYTE;
 use near_sdk::serde::{Deserialize, Serialize};
+use near_sdk::serde_json::json;
 use near_sdk::{env, near_bindgen, setup_alloc};
 
+use crate::internal_orders::*;
 use crate::internal_products::*;
 use crate::internal_stores::*;
-use crate::internal_orders::*;
 use crate::models::*;
 use crate::utils::*;
 
+mod internal_orders;
 mod internal_products;
 mod internal_stores;
-mod internal_orders;
 mod models;
 mod utils;
 
@@ -76,5 +78,101 @@ impl Marketplace {
     self.orders.insert(&id, &order);
     "0".to_string() // funds to return
   }
-  
+}
+
+/*
+ * The rest of this file holds the inline tests for the code above
+ * Learn more about Rust tests: https://doc.rust-lang.org/book/ch11-01-writing-tests.html
+ *
+ * To run from contract directory:
+ * cargo test -- --nocapture
+ *
+ * From project root, to run in combination with frontend tests:
+ * yarn test
+ *
+ */
+#[cfg(test)]
+mod tests {
+  use super::*;
+  use near_sdk::MockedBlockchain;
+  use near_sdk::{testing_env, VMContext};
+
+  // mock the context for testing, notice "signer_account_id" that was accessed above from env::
+  fn get_context(input: Vec<u8>, is_view: bool) -> VMContext {
+    VMContext {
+      current_account_id: "marketplace.test.near".to_string(),
+      signer_account_id: "customer.test.near".to_string(),
+      signer_account_pk: vec![0, 1, 2],
+      predecessor_account_id: "usdt.test.near".to_string(),
+      input,
+      block_index: 0,
+      block_timestamp: 0,
+      account_balance: 0,
+      account_locked_balance: 0,
+      storage_usage: 0,
+      attached_deposit: 0,
+      prepaid_gas: 10u64.pow(18),
+      random_seed: vec![0, 1, 2],
+      is_view,
+      output_data_receivers: vec![],
+      epoch_height: 19,
+    }
+  }
+
+  #[test]
+  fn test_successful_ft_transfer_call_with_order_creation() {
+    let context = get_context(vec![], false);
+    testing_env!(context);
+    let mut contract = Marketplace::default();
+    let data = json!({
+      "id": "order-id",
+      "customer_account_id": "customer.test.near",
+      "store_account_id": "fabrics-delivery.test.near",
+      "payload": {
+        "token": "usdt.test.near",
+        "amount": "1000000",
+        "line_items": []
+      },
+      "status": OrderStatus::PENDING
+    })
+    .to_string();
+    assert_eq!(
+      "0".to_string(),
+      contract.ft_on_transfer(
+        "customer.test.near".to_string(),
+        "1000000".to_string(),
+        data
+      )
+    );
+  }
+
+  #[test]
+  fn test_failure_ft_transfer_call_with_incorrect_amounts() {
+    assert_panic!(
+      {
+        let context = get_context(vec![], false);
+        testing_env!(context);
+        let mut contract = Marketplace::default();
+        let data = json!({
+          "id": "order-id",
+          "customer_account_id": "customer.test.near",
+          "store_account_id": "fabrics-delivery.test.near",
+          "payload": {
+            "token": "usdt.test.near",
+            "amount": "1000001",
+            "line_items": []
+          },
+          "status": OrderStatus::PENDING
+        })
+        .to_string();
+        contract.ft_on_transfer(
+          "customer.test.near".to_string(),
+          "1000000".to_string(),
+          data,
+        );
+      },
+      String,
+      starts with "assertion failed:"
+    );
+  }
 }
