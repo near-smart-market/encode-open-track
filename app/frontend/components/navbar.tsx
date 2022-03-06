@@ -4,13 +4,8 @@ import Heart from "../icons/heart";
 import ShoppingCart from "../icons/shopping_cart";
 import UserIcon from "../icons/user_icon";
 
-import { login, logout } from "../utils/utils";
-
-import { getConfig } from "../utils/config";
 import { useGlobalContext } from "../context/appContext";
-const { networkId } = getConfig(process.env.NODE_ENV || "development");
-
-import FT_TOKEN from "../pages/api/ft_token";
+import { useWalletContext, signIn, signOut } from "../context/walletContext";
 
 import Link from "next/link";
 
@@ -18,17 +13,16 @@ const Navbar = () => {
   const [loggedIn, setLoggedIn] = React.useState(false);
 
   const { cart } = useGlobalContext();
-  console.log(cart);
+  const {
+    walletConnection,
+    contract,
+    nearConfig,
+    currentUser
+  } = useWalletContext();
 
   React.useEffect(() => {
-    if (typeof window !== undefined) {
-      if (window.walletConnection && window.walletConnection.isSignedIn()) {
-        setLoggedIn(true);
-      } else {
-        setLoggedIn(false);
-      }
-    }
-  });
+    walletConnection?.isSignedIn() ? setLoggedIn(true) : setLoggedIn(false)
+  })
 
   return (
     <div className="flex flex-wrap place-items-center w-full">
@@ -81,14 +75,14 @@ const Navbar = () => {
                 <a
                   className="flex items-center hover:text-gray-200"
                   href="#"
-                  onClick={login}
+                  onClick={() => signIn(walletConnection, contract, nearConfig)}
                 >
                   <UserIcon />
                 </a>
               ) : (
                 <button
                   className="hover:bg-white hover:text-black pl-5 pr-5 rounded"
-                  onClick={logout}
+                  onClick={() => signOut(walletConnection)}
                 >
                   Logout
                 </button>

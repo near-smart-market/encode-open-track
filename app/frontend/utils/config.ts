@@ -1,4 +1,5 @@
-const CONTRACT_NAME = process.env.CONTRACT_NAME ||'prix.test.near'
+// const CONTRACT_NAME = process.env.CONTRACT_NAME ||'marketplace.test.near'
+const CONTRACT_NAME = 'dev-1646543033356-60509432140368'
 
 function getConfig(env: any) {
   
@@ -36,9 +37,9 @@ function getConfig(env: any) {
   case 'local':
     return {
       networkId: 'local',
-      nodeUrl: 'http://127.0.0.1:49158',
-      keyPath: `${process.env.HOME}/.near/validator_key.json`,
-      walletUrl: 'http://127.0.0.1:49162/wallet',
+      nodeUrl: 'http://127.0.0.1:49178',
+      keyPath: `/home/prix/.neartosis/2022-03-06T01.23.14/validator-key.json`,
+      walletUrl: 'http://127.0.0.1:49182/wallet',
       contractName: CONTRACT_NAME,
     }
   case 'test':

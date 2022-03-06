@@ -6,14 +6,19 @@ import Icon from "@mdi/react";
 import { mdiCartOutline, mdiCheck } from "@mdi/js";
 import { useGlobalContext } from "../context/appContext";
 
-export type ProductDetails = {
+export type ProductDetailsBC = {
   id: any;
   name: string;
-  price: string;
-  currency: string;
-  inventory: number;
+  price: number;
+  store_account_id: string;
   description: string;
-  slides: Array<Slide>;
+  media_url: string;
+};
+
+export type ProductDetails = ProductDetailsBC & {
+  currency?: string;
+  inventory?: number;
+  slides?: Array<Slide>;
 };
 
 export type Props = ProductDetails & {
@@ -24,6 +29,8 @@ const ProductCard: FC<Props> = ({
   id,
   name,
   price,
+  store_account_id,
+  media_url,
   currency,
   inventory,
   slides,
@@ -34,27 +41,30 @@ const ProductCard: FC<Props> = ({
 
   const isInCart = (id: string) => {
     const sres = cart.filter((prod) => prod.id === id);
-    return !(sres.length > 0) 
-  }
+    return !(sres.length > 0);
+  };
 
   return (
     <div className="bg-grey-light py-8 w-full flex justify-center items-start top-0">
       <div className="bg-white rounded  shadow hover:shadow-md duration-4">
-        <div className="flex flex-row justify-between uppercase font-bold text-blue-dark border-b p-6">
+        <div className="flex flex-col justify-between uppercase font-bold text-blue-dark border-b p-6">
           <p>{name}</p>
-          <div className="cursor-pointer text-grey-dark hover:text-blue duration-4">
-            <i className="fas fa-ellipsis-v"></i>
-          </div>
+          <p className="text-sm lowercase text-blue-700">
+            Offered by: {store_account_id}
+          </p>
         </div>
-        <ImageSlider slides={slides} />
+
+        <ImageSlider slides={slides} media_url={media_url} />
         <div className="p-6 text-grey-darker text-justify flex flex-col">
           <div className="pt-4">
             <span className="uppercase bg-blue-500 text-white font-bold p-2 text-xs shadow rounded">
-              {price} {currency}
+              {price / 10 ** 8} {currency}
             </span>
-            <span className="uppercase bg-yellow-800 text-gray-100 font-bold ml-2 p-2 text-xs shadow rounded">
-              stock: {inventory}
-            </span>
+            {inventory && (
+              <span className="uppercase bg-yellow-800 text-gray-100 font-bold ml-2 p-2 text-xs shadow rounded">
+                stock: {inventory}
+              </span>
+            )}
           </div>
           <p className="text-gray-900 mt-4">{description}</p>
         </div>
@@ -71,9 +81,7 @@ const ProductCard: FC<Props> = ({
             </div>
           ) : (
             <div className="p-6 text-grey-darker text-justify flex flex-row justify-end border-t">
-              <button
-                className="uppercase self-end bg-blue-700 font-bold text-white px-6 py-4 rounded hover:bg-blue-900 transition ease-in-out delay-15 duration-4 flex"
-              >
+              <button className="uppercase self-end bg-blue-700 font-bold text-white px-6 py-4 rounded hover:bg-blue-900 transition ease-in-out delay-15 duration-4 flex">
                 <Icon path={mdiCheck} size={1} />
                 Added to Cart
               </button>
