@@ -23,15 +23,6 @@ export type StoreDetails = {
   name: string;
 };
 
-let initObject = {
-  cart: Array<ProductDetails>(),
-  marketplace: {
-    stores: Array<StoreDetails>(),
-    products: Array<ProductDetails>(),
-  },
-  setCart: (v: any) => {},
-  setMarketplace: (v: any) => {},
-};
 
 const sampleStore = {
   id: "prix.testnet",
@@ -148,8 +139,8 @@ export type Order = {
   };
 };
 
-const create_order = async (contract: any, recipient: string, order: Order) => {
-  const response = await contract.ft_transfer_call({
+export const create_order = async (usdtContract: any, recipient: string, order: Order) => {
+  const response = await usdtContract.ft_transfer_call({
     args: {
       receiver_id: recipient,
       amount: order.payload.amount.toString(),
@@ -159,12 +150,28 @@ const create_order = async (contract: any, recipient: string, order: Order) => {
     gas: ATTACHED_GAS, // attached GAS (optional)
     amount: YOCTO_NEAR, // attached deposit in yoctoNEAR (optional)
   });
-  console.log("response", response);
+  console.log("response from create order!!", response);
+  return response;
 };
 
 // TODO: Schedule a Order
+
 // TODO: Cancel a Order
 //
+
+
+let initObject = {
+  cart: Array<ProductDetails>(),
+  marketplace: {
+    stores: Array<StoreDetails>(),
+    products: Array<ProductDetails>(),
+  },
+  mydetails: {
+    balance: 0,
+  },
+  setCart: (v: any) => {},
+  setMarketplace: (v: any) => {},
+};
 
 const GlobalContext = createContext(initObject);
 
@@ -175,8 +182,12 @@ export const GlobalContextWrapper = ({ children }: any) => {
     stores: [],
     selfStore: undefined,
   });
+  const [myDetails, setMyDetails] = useState<{balance: number}>({
+    balance: 0
+  });
 
-  const { walletConnection, contract, currentUser } = useWalletContext();
+  const { walletConnection, contract, currentUser, usdtContract } =
+    useWalletContext();
 
   // Prefilling with Fake Data
   useEffect(() => {
@@ -195,17 +206,44 @@ export const GlobalContextWrapper = ({ children }: any) => {
       });
       console.log(stores);
 
+      // Get Products for starting 5 stores
+      // TODO: Handle Responses type back.
+      let products: any = [];
+      if (stores !== null) {
+        let len = stores.length > 5 ? 5 : stores.length;
+        for (let i = 0; i < len; ++i) {
+          const prods = await list_store_products(
+            contract,
+            stores[i].id,
+            currentUser?.accountId
+          );
+          products = [...products, ...prods];
+        }
+      }
+
+      // Load my Products if any
       let myProducts = await list_store_products(
         contract,
         currentUser?.accountId,
         currentUser?.accountId
       );
 
-      console.log(myProducts);
+      //Check my usdt Balance
+      const response = await usdtContract?.ft_balance_of({
+        account_id: currentUser?.accountId, // argument name and value - pass empty object if no args required
+      });
+      console.log("USDT Balance: ", response / 10**8 );
+      if(response !== null || response!== undefined) {
+        setMyDetails({
+          ...myDetails,
+          balance: response / 10**8
+        });
+      }
 
       setMarketplace({
         ...marketplace,
         stores: [...stores],
+        products: [...products],
         selfStore: store_data,
         selfProducts: [...myProducts],
       });
@@ -219,6 +257,7 @@ export const GlobalContextWrapper = ({ children }: any) => {
         marketplace: marketplace,
         setCart: setCart,
         setMarketplace: setMarketplace,
+        mydetails: myDetails
       }}
     >
       {children}

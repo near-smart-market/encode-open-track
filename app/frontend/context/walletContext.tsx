@@ -23,6 +23,7 @@ type WalletContext = {
   contract: undefined | Contract;
   nearConfig: any;
   currentUser: undefined | CurrentUser;
+  usdtContract: undefined | Contract;
 };
 
 const WalletContext = createContext<WalletContext>({
@@ -30,6 +31,7 @@ const WalletContext = createContext<WalletContext>({
   contract: undefined,
   nearConfig: undefined,
   currentUser: undefined,
+  usdtContract: undefined
 });
 
 // Initializing contract
@@ -97,7 +99,19 @@ async function initContract() {
     } as ContractMethods
   );
 
-  return { contract, currentUser, nearConfig, walletConnection };
+  const usdtContractAddress = "dev-1646543015264-69753561262032";
+  const usdtContract = await new Contract(
+    walletConnection.account(),
+    usdtContractAddress,
+    {
+      // name of contract you're connecting to
+      viewMethods: ["ft_balance_of"], // view methods do not change state but usually return a value
+      changeMethods: ["ft_transfer_call"], // change methods modify state
+      sender: walletConnection.getAccountId()
+    } as ContractMethods
+  );
+
+  return { contract, currentUser, nearConfig, walletConnection, usdtContract };
 }
 
 const signIn = (wallet: WalletConnection, contract: any, config: any) => {
@@ -121,19 +135,21 @@ const WalletContextWrapper = ({ children }: any) => {
   const [loading, setLoading] = useState(true);
   const [walletConnection, setWalletConnection] = useState<WalletConnection>();
   const [contract, setContract] = useState<Contract>();
+  const [usdtContract, setUsdtContract] = useState<Contract>();
   const [currentUser, setCurrentUser] = useState<CurrentUser>();
   const [nearConfig, setNearConfig] = useState<any>();
 
   useEffect(() => {
     // setKeyStore(new keyStores.BrowserLocalStorageKeyStore());
     (async () => {
-      const { contract, currentUser, nearConfig, walletConnection } =
+      const { contract, currentUser, nearConfig, walletConnection, usdtContract } =
         await initContract();
-      console.log(contract, currentUser, nearConfig, walletConnection);
+      console.log(contract, currentUser, nearConfig, walletConnection, usdtContract);
       setWalletConnection(walletConnection);
       setContract(contract);
       setCurrentUser(currentUser);
       setNearConfig(nearConfig);
+      setUsdtContract(usdtContract);
       // signIn(walletConnection, contract, nearConfig);
       if (walletConnection.isSignedIn()) {
         console.log("User is Signed In.");
@@ -157,6 +173,7 @@ const WalletContextWrapper = ({ children }: any) => {
         contract,
         nearConfig,
         currentUser,
+        usdtContract
       }}
     >
       {children}

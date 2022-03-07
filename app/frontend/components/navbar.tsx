@@ -12,7 +12,7 @@ import Link from "next/link";
 const Navbar = () => {
   const [loggedIn, setLoggedIn] = React.useState(false);
 
-  const { cart } = useGlobalContext();
+  const { cart, mydetails } = useGlobalContext();
   const {
     walletConnection,
     contract,
@@ -56,9 +56,9 @@ const Navbar = () => {
             </ul>
             {/* <!-- Header Icons --> */}
             <div className="hidden xl:flex items-center space-x-5">
-              {/* <a className="hover:text-gray-200" href="#">
-                <Heart />
-              </a> */}
+              {
+                mydetails.balance && <p className="capitalize text-white">USDT Balance: {mydetails.balance}</p>
+              }
               <Link href="/cart">
                 <a className="flex items-center hover:text-gray-200">
                   <ShoppingCart />
