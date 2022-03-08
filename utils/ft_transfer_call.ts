@@ -25,9 +25,12 @@ async function execute() {
         {
             name: "memo", alias: "m", type: String, defaultValue: "orders-1.json",
         },
+        {
+            name: "orderId", alias: "i", type: String, defaultValue: "order-1"
+        }
     ]);
 
-    
+
     try {
         console.log(options);
         await run(options);
@@ -61,7 +64,7 @@ async function run(options: cla.CommandLineOptions) {
             receiver_id: options.recipientName,
             amount: order.payload.amount.toString(),
             memo: options.memo,
-            msg: JSON.stringify(order)
+            msg: JSON.stringify({ ...order, id: options.orderId })
         },
         gas: ATTACHED_GAS, // attached GAS (optional)
         amount: YOCTO_NEAR // attached deposit in yoctoNEAR (optional)

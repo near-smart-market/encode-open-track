@@ -13,10 +13,10 @@ near call $ID storage_deposit '' --accountId $ACCOUNT --amount 0.00125
 near call $ID ft_transfer '{"receiver_id": "'$ACCOUNT'", "amount": "5000000000"}' --accountId $ID --amount 0.000000000000000000000001
 
 ### Platforms
-echo "funding platform with 50 USDT"
+echo "funding platform with 50000000 USDT"
 ACCOUNT=marketplace.test.near
 near call $ID storage_deposit '' --accountId $ACCOUNT --amount 0.00125
-near call $ID ft_transfer '{"receiver_id": "'$ACCOUNT'", "amount": "50000000"}' --accountId $ID --amount 0.000000000000000000000001
+near call $ID ft_transfer '{"receiver_id": "'$ACCOUNT'", "amount": "50000000000000"}' --accountId $ID --amount 0.000000000000000000000001
 
 
 ### Test accounts

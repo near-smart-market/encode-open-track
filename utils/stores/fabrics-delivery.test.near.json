@@ -1,0 +1,9 @@
+{
+    "id": "fabrics-delivery.test.near",
+    "address": "Toronto, Canada",
+    "name": "Fabrics Delivery Store",
+    "lat_lng": {
+        "latitude": 43.651070,
+        "longitude": -79.347015
+    }
+}

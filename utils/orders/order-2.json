@@ -1,5 +1,5 @@
 {
-    "id": "order-1",
+    "id": "order-2",
     "customer_account_id": "clifford.test.near",
     "store_account_id": "fabrics-delivery.test.near",
     "status": "PENDING",
@@ -9,11 +9,7 @@
         "line_items": [
             {
                 "count": 1,
-                "product_id": "product-1"
-            },
-            {
-                "count": 1,
-                "product_id": "product-2"
+                "product_id": "fabrics-delivery.test.near:product-1"
             }
         ]
     }

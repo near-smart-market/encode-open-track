@@ -14,4 +14,4 @@ Fund accounts using distribute-funds.sh
 Add any appropriate test cases in the `utils` folder. Some examples are already there.
 
 # Add Marketplace Smart Contracts to it
-run deploy-marketplace.sh
+sh deploy-marketplace.sh
