@@ -1,0 +1,3 @@
+[submodule "contracts/FT"]
+	path = contracts/FT
+	url = https://github.com/near-smart-market/FT
