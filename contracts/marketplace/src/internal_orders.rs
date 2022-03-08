@@ -176,7 +176,8 @@ mod tests {
     fn test_list_store_orders() {
         let context = get_context(vec![], false);
         testing_env!(context);
-        let contract = Marketplace::default();
+        let mut contract = Marketplace::default();
+        contract.ft_contract_name = String::from("usdt.test.near");
         let stores = contract.list_store_orders("fabrics-delivery.test.near".to_string());
         assert_eq!(0, stores.len());
     }
@@ -185,7 +186,8 @@ mod tests {
     fn test_list_customer_orders() {
         let context = get_context(vec![], false);
         testing_env!(context);
-        let contract = Marketplace::default();
+        let mut contract = Marketplace::default();
+        contract.ft_contract_name = String::from("usdt.test.near");
         let stores = contract.list_customer_orders("fabrics-delivery.test.near".to_string());
         assert_eq!(0, stores.len());
     }
@@ -193,11 +195,13 @@ mod tests {
     #[test]
     fn test_cancel_non_existing_order_should_fail(){
         assert_panic!({
-            let context = get_context(vec![], false);
+            let mut context = get_context(vec![], false);
+            context.attached_deposit = 1;
             testing_env!(context);
             let mut contract = Marketplace::default();
+            contract.ft_contract_name = String::from("usdt.test.near");
             contract.cancel_order("fabrics-delivery.test.near".to_string(), "order-1".to_string());
-        }, String, "");
+        }, String, "Order does not exist");
     }
 
 }

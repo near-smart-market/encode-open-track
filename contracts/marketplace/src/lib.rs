@@ -27,6 +27,7 @@ pub struct Marketplace {
   orders: UnorderedMap<String, Order>,
   products: UnorderedMap<String, Product>, // how to lookup map with set of 2 values by joining storeId+productId
   stores: UnorderedMap<String, Store>,
+  ft_contract_name: String,
 }
 
 impl Default for Marketplace {
@@ -35,17 +36,27 @@ impl Default for Marketplace {
       orders: UnorderedMap::new(StorageKey::Orders),
       products: UnorderedMap::new(StorageKey::Products),
       stores: UnorderedMap::new(StorageKey::Stores),
+      ft_contract_name: String::from("")
     }
   }
 }
 
 #[near_bindgen]
 impl Marketplace {
+  #[payable]
+  pub fn set_ft_contract_name(&mut self, ft_contract_name: String) -> String{
+    // only contract owner can call this method
+    assert_eq!(env::predecessor_account_id(), env::signer_account_id());
+    assert_one_yocto();
+    self.ft_contract_name = ft_contract_name;
+    String::from("OK")
+  }
+
   // This is the entrypoint into actually creating an order
   // We must receive valid funds from the stablecoin contract to create the order
   pub fn ft_on_transfer(&mut self, sender_id: String, amount: String, msg: String) -> String {
     // assert that sender is usdt.test.near, we only support USDT for this POC
-    assert_eq!("usdt.test.near", env::predecessor_account_id().to_string());
+    assert_eq!(self.ft_contract_name, env::predecessor_account_id().to_string());
 
     env::log(
       format!(
@@ -124,6 +135,7 @@ mod tests {
     let context = get_context(vec![], false);
     testing_env!(context);
     let mut contract = Marketplace::default();
+    contract.ft_contract_name = String::from("usdt.test.near");
     let data = json!({
       "id": "order-id",
       "customer_account_id": "customer.test.near",
@@ -153,6 +165,7 @@ mod tests {
         let context = get_context(vec![], false);
         testing_env!(context);
         let mut contract = Marketplace::default();
+        contract.ft_contract_name = String::from("usdt.test.near");
         let data = json!({
           "id": "order-id",
           "customer_account_id": "customer.test.near",

@@ -18,7 +18,7 @@ impl Marketplace {
     }
     pub fn update_product(
         &mut self,
-        id: String,
+        product_id: String,
         store_account_id: String,
         description: Option<String>,
         media_url: Option<String>,
@@ -28,6 +28,7 @@ impl Marketplace {
         self.stores
             .get(&store_account_id)
             .expect("Store does not exist");
+            let id = format!("{}:{}", store_account_id, product_id);
         let mut product = self.products.get(&id).expect("Product does not exist");
         match description {
             Some(x) => product.description = x,
