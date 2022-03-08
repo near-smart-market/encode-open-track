@@ -99,7 +99,7 @@ async function initContract() {
     } as ContractMethods
   );
 
-  const usdtContractAddress = "dev-1646543015264-69753561262032";
+  const usdtContractAddress = "encode-hack-stablecoin.testnet"; // TODO: make it an env.var please
   const usdtContract = await new Contract(
     walletConnection.account(),
     usdtContractAddress,

@@ -25,8 +25,8 @@ class FT_TOKEN {
     };
 
     constructor(cname?: string, aname?: string) {
-        this.contractName = cname || "usdt.test.near";
-        this.accountName = aname || "dev0.test.near";
+        this.contractName = cname || "encode-hack-stablecoin.testnet";
+        this.accountName = aname || "encode-hack-finast-shoes.testnet";
 
     }
 

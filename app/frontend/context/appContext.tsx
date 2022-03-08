@@ -95,6 +95,7 @@ export const list_store_products = async (
   store_id: any,
   currentAccountId: any
 ) => {
+  console.log("list_store_products", contract, store_id, currentAccountId);
   const response = await contract.list_store_products({
     account_id: currentAccountId,
     id: store_id,
@@ -209,7 +210,7 @@ export const GlobalContextWrapper = ({ children }: any) => {
       // Get Products for starting 5 stores
       // TODO: Handle Responses type back.
       let products: any = [];
-      if (stores !== null) {
+      if (stores.length) {
         let len = stores.length > 5 ? 5 : stores.length;
         for (let i = 0; i < len; ++i) {
           const prods = await list_store_products(

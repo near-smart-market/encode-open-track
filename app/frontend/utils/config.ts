@@ -1,5 +1,5 @@
 // const CONTRACT_NAME = process.env.CONTRACT_NAME ||'marketplace.test.near'
-const CONTRACT_NAME = 'dev-1646543033356-60509432140368'
+const CONTRACT_NAME = 'encode-hack-marketplace.testnet'
 
 function getConfig(env: any) {
   
