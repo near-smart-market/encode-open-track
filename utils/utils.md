@@ -11,6 +11,9 @@
 
 # Interact with marketplace
 
+# IMPORTANT: setup marketplace ft_contract_name
+`npx ts-node marketplace_set_ft_contract_name.ts -c marketplace.test.near -a marketplace.test.near --ftContractName usdt.test.near`
+
 ## create_store
 `npx ts-node marketplace_create_store.ts -c marketplace.test.near -a fabrics-delivery.test.near -p stores/fabrics-delivery.test.near.json`
 
