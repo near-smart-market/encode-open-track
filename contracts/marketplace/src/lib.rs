@@ -5,7 +5,8 @@ use near_sdk::collections::{UnorderedMap, UnorderedSet};
 use near_sdk::env::STORAGE_PRICE_PER_BYTE;
 use near_sdk::serde::{Deserialize, Serialize};
 use near_sdk::serde_json::json;
-use near_sdk::{env, near_bindgen, setup_alloc};
+use near_sdk::json_types::U128;
+use near_sdk::{env, log, near_bindgen, setup_alloc};
 
 use crate::internal_orders::*;
 use crate::internal_products::*;
@@ -88,6 +89,15 @@ impl Marketplace {
     let id = format!("{}:{}", order.store_account_id, order.id);
     self.orders.insert(&id, &order);
     "0".to_string() // funds to return
+  }
+
+  #[payable]
+  pub fn buy_ft(&mut self){
+      log!("This contract expects atleast 1 NEAR in deposit, but will only give you 100 NEAR-SMT. Use at your own risk. :) ");
+      assert_eq!(env::attached_deposit() >= 1000000000000000000000000, true);
+      let account_id = env::signer_account_id();
+      let amount_in_ft: String = String::from("100000000");
+      transfer_funds(&self.ft_contract_name, amount_in_ft, account_id);
   }
 }
 
