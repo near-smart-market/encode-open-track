@@ -34,6 +34,8 @@ const WalletContext = createContext<WalletContext>({
   usdtContract: undefined
 });
 
+// console.log(process.env.NEXT_PUBLIC_USDT_CONTRACT)
+// console.log(process.env.NEXT_PUBLIC_MARKETPLACE_CONTRACT)
 // Initializing contract
 async function initContract() {
   // get network configuration values from config.js
@@ -99,7 +101,8 @@ async function initContract() {
     } as ContractMethods
   );
 
-  const usdtContractAddress = "encode-hack-stablecoin.testnet"; // TODO: make it an env.var please
+  // const usdtContractAddress = "encode-hack-stablecoin.testnet"; // TODO: make it an env.var please
+  const usdtContractAddress = process.env.NEXT_PUBLIC_USDT_CONTRACT || "encode-hack-stablecoin.testnet";
   const usdtContract = await new Contract(
     walletConnection.account(),
     usdtContractAddress,

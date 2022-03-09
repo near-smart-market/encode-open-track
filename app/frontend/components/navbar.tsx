@@ -53,11 +53,16 @@ const Navbar = () => {
                   <a className="hover:text-gray-200">Edit</a>
                 </Link>
               </li>
+              <li>
+                <Link href="/orders">
+                  <a className="hover:text-gray-200">Orders</a>
+                </Link>
+              </li>
             </ul>
             {/* <!-- Header Icons --> */}
             <div className="hidden xl:flex items-center space-x-5">
               {
-                mydetails.balance && <p className="capitalize text-white">USDT Balance: {mydetails.balance}</p>
+                mydetails.balance > 0 && <p className="capitalize text-white">USDT Balance: {mydetails.balance}</p>
               }
               <Link href="/cart">
                 <a className="flex items-center hover:text-gray-200">

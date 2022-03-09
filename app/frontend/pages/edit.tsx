@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { ProductDetailsBC } from "../components/product_card";
 
-import { useGlobalContext, create_product } from "../context/appContext";
+import { useGlobalContext, create_product, create_store } from "../context/appContext";
 import { useWalletContext } from "../context/walletContext";
 
 import EditProduct from "../components/editProduct";
@@ -30,6 +30,15 @@ const Add = () => {
     pmedia: "",
   });
 
+  const [lsstore, setLSStore] = useState({
+    name: "",
+    address: "",
+    lat_lng: {
+      latitude: 0.0,
+      longitude: 0.0,
+    },
+  });
+
   const handleSubmit = (e: any) => {
     e.preventDefault();
     console.log(product);
@@ -53,10 +62,53 @@ const Add = () => {
     });
   };
 
+  const handleLsChange = (e: any) => {
+    switch (e.target.name) {
+      case "lat":
+        setLSStore({
+          ...lsstore,
+          lat_lng: {
+            ...lsstore.lat_lng,
+            latitude: e.target.value,
+          },
+        });
+        break;
+      case "lng":
+        setLSStore({
+          ...lsstore,
+          lat_lng: {
+            ...lsstore.lat_lng,
+            longitude: e.target.value,
+          },
+        });
+        break;
+      default:
+        setLSStore({
+          ...lsstore,
+          [e.target.name]: e.target.value,
+        });
+    }
+  };
+  const createStore = async (e: any) => {
+    e.preventDefault();
+    const newStore = {
+      name: lsstore.name,
+      address: lsstore.address,
+      lat_lng: {
+        longitude: parseFloat(lsstore.lat_lng.longitude),
+        latitude: parseFloat(lsstore.lat_lng.latitude)
+      },
+      id: currentUser?.accountId
+    }
+    console.log(newStore);
+    const res = await create_store(contract, {...newStore});
+    console.log(res);
+  };
+
   return (
     <div className="min-h-screen flex flex-col justify-start align-center">
       <div className="flex justify-start align-center">
-        {selfStore && (
+        {selfStore ? (
           <div className="container p-3 flex flex-col justify-start items-center shadow-sm shadow-black m-3">
             <h3 className="font-bold text-2xl text-center mb-3 mt-4">
               Shop Details
@@ -139,6 +191,102 @@ const Add = () => {
                       Address
                     </label>
                   </div>
+                </div>
+
+                {/* <button
+                type="submit"
+                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                Edit Store Details
+              </button> */}
+              </form>
+            </div>
+          </div>
+        ) : (
+          <div className="container p-3 flex flex-col justify-start items-center shadow-sm shadow-black m-3">
+            <h3 className="font-bold text-2xl text-center mb-3 mt-4">
+              Create a New Shop
+            </h3>
+            <div className="w-4/5 my-5">
+              <form>
+                <div className="relative z-0 mb-6 w-full group">
+                  <input
+                    type="text"
+                    name="name"
+                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    placeholder=" "
+                    value={lsstore.name}
+                    required
+                    onChange={(e) => handleLsChange(e)}
+                  />
+                  <label
+                    htmlFor="sname"
+                    className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                  >
+                    Name
+                  </label>
+                </div>
+                <div className="relative z-0 mb-6 w-full group">
+                  <input
+                    type="number"
+                    name="lat"
+                    id="lat"
+                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    placeholder=" "
+                    value={lsstore.lat_lng.latitude}
+                    required
+                    onChange={(e) => handleLsChange(e)}
+                  />
+                  <label
+                    htmlFor="lat"
+                    className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                  >
+                    Latitude
+                  </label>
+                </div>
+                <div className="relative z-0 mb-6 w-full group">
+                  <input
+                    type="number"
+                    name="lng"
+                    id="lng"
+                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    placeholder=" "
+                    value={lsstore.lat_lng.longitude}
+                    required
+                    onChange={(e) => handleLsChange(e)}
+                  />
+                  <label
+                    htmlFor="lng"
+                    className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                  >
+                    Longitude
+                  </label>
+                </div>
+                <div className="grid xl:grid-cols-1 xl:gap-0">
+                  <div className="relative z-0 mb-6 w-full group">
+                    <input
+                      type="text"
+                      name="address"
+                      id="saddr"
+                      className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                      placeholder=" "
+                      value={lsstore.address}
+                      required
+                      onChange={(e) => handleLsChange(e)}
+                    />
+                    <label
+                      htmlFor="saddr"
+                      className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                    >
+                      Address
+                    </label>
+                  </div>
+                  <button
+                    onClick={createStore}
+                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  >
+                    Create a new Shop
+                  </button>
                 </div>
 
                 {/* <button

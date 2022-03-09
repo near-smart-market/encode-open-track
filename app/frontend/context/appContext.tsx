@@ -23,18 +23,17 @@ export type StoreDetails = {
   name: string;
 };
 
+// const sampleStore = {
+//   id: "prix.testnet",
+//   address: "Toronto, Canada",
+//   name: "Fabrics Delivery Store",
+//   lat_lng: {
+//     latitude: 43.65107,
+//     longitude: -79.347015,
+//   },
+// };
 
-const sampleStore = {
-  id: "prix.testnet",
-  address: "Toronto, Canada",
-  name: "Fabrics Delivery Store",
-  lat_lng: {
-    latitude: 43.65107,
-    longitude: -79.347015,
-  },
-};
-
-const create_store = async (contract: any, store: any) => {
+export const create_store = async (contract: any, store: any) => {
   const response = await contract.create_store({
     args: { store },
     gas: ATTACHED_GAS,
@@ -140,7 +139,11 @@ export type Order = {
   };
 };
 
-export const create_order = async (usdtContract: any, recipient: string, order: Order) => {
+export const create_order = async (
+  usdtContract: any,
+  recipient: string,
+  order: Order
+) => {
   const response = await usdtContract.ft_transfer_call({
     args: {
       receiver_id: recipient,
@@ -155,11 +158,98 @@ export const create_order = async (usdtContract: any, recipient: string, order: 
   return response;
 };
 
+// TODO: Get Store Orders
+
+export const get_store_orders = async (
+  contract: any,
+  accountId: any,
+  store_account_id: any
+) => {
+  const response = await contract.list_store_products({
+    account_id: accountId,
+    id: store_account_id,
+  });
+  // console.log("response", response);
+  return response;
+};
+
+// GET User Orders
+export const get_user_orders = async (contract: any, accountId: any) => {
+  const response = await contract.list_customer_orders({
+    account_id: accountId,
+    customer_account_id: accountId,
+  });
+  return response;
+};
+
+// Retrieve a Order
+export const retrieve_order = async (
+  contract: any,
+  accountId: any,
+  orderId: any
+) => {
+  const response = await contract.retrieve_order({
+    account_id: accountId,
+    order_id: orderId,
+  });
+  console.log("response", response);
+  return response;
+};
+
 // TODO: Schedule a Order
+export const schedule_order = async (
+  contract: any,
+  store_account_id: any,
+  orderId: any
+) => {
+  const response = await contract.schedule_order({
+    args: {
+      store_account_id: store_account_id,
+      order_id: orderId,
+    },
+    gas: ATTACHED_GAS,
+    amount: "1",
+    meta: "schedule_order",
+  });
+  // console.log("response", { response });
+  return response;
+};
 
-// TODO: Cancel a Order
-//
+// Complete an Order
+export const complete_order = async (
+  contract: any,
+  store_account_id: any,
+  orderId: any
+) => {
+  const response = await contract.complete_order({
+    args: {
+      store_account_id: store_account_id,
+      order_id: orderId,
+    },
+    gas: ATTACHED_GAS,
+    amount: "1",
+    meta: "complete_order",
+  });
+  return response;
+};
 
+// Cancel a Order
+export const cancel_order = async (
+  contract: any,
+  store_account_id: any,
+  orderId: any
+) => {
+  const response = await contract.cancel_order({
+    args: {
+      store_account_id: store_account_id,
+      order_id: orderId,
+    },
+    gas: ATTACHED_GAS,
+    amount: "1",
+    meta: "cancel_order",
+  });
+  return response;
+};
 
 let initObject = {
   cart: Array<ProductDetails>(),
@@ -183,29 +273,37 @@ export const GlobalContextWrapper = ({ children }: any) => {
     stores: [],
     selfStore: undefined,
   });
-  const [myDetails, setMyDetails] = useState<{balance: number}>({
-    balance: 0
+  const [myDetails, setMyDetails] = useState<{ balance: number }>({
+    balance: 0,
   });
 
   const { walletConnection, contract, currentUser, usdtContract } =
     useWalletContext();
 
-  // Prefilling with Fake Data
   useEffect(() => {
     (async () => {
-      // let cres = await create_store(contract, {...sampleStore});
+      // let cres = await retrieve_order(contract, currentUser?.accountId, "prix.testnet-7264");
       // console.log(cres);
-      let store_data = await retrieve_store(
-        contract,
-        currentUser?.accountId,
-        currentUser?.accountId
-      );
+
+      let store_data = null;
+      try {
+        store_data = await retrieve_store(
+          contract,
+          currentUser?.accountId,
+          currentUser?.accountId
+        );
+      } catch (e) {
+        console.log(
+          "Looks like you don't have a store yet. Do create one to list any products"
+        );
+      }
+
       console.log(store_data);
 
       let stores = await contract?.list_stores({
         account_id: currentUser?.accountId,
       });
-      console.log(stores);
+      // console.log(stores);
 
       // Get Products for starting 5 stores
       // TODO: Handle Responses type back.
@@ -223,21 +321,26 @@ export const GlobalContextWrapper = ({ children }: any) => {
       }
 
       // Load my Products if any
-      let myProducts = await list_store_products(
-        contract,
-        currentUser?.accountId,
-        currentUser?.accountId
-      );
+      let myProducts: any = [];
+      try {
+        myProducts = await list_store_products(
+          contract,
+          currentUser?.accountId,
+          currentUser?.accountId
+        );
+      } catch (e) {
+        console.log(e);
+      }
 
       //Check my usdt Balance
       const response = await usdtContract?.ft_balance_of({
         account_id: currentUser?.accountId, // argument name and value - pass empty object if no args required
       });
-      console.log("USDT Balance: ", response / 10**8 );
-      if(response !== null || response!== undefined) {
+      console.log("USDT Balance: ", response / 10 ** 8);
+      if (response !== null || response !== undefined) {
         setMyDetails({
           ...myDetails,
-          balance: response / 10**8
+          balance: response / 10 ** 8,
         });
       }
 
@@ -258,7 +361,7 @@ export const GlobalContextWrapper = ({ children }: any) => {
         marketplace: marketplace,
         setCart: setCart,
         setMarketplace: setMarketplace,
-        mydetails: myDetails
+        mydetails: myDetails,
       }}
     >
       {children}

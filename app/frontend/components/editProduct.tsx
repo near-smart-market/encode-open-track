@@ -36,7 +36,6 @@ const EditProduct: FC<Props> = ({ product }) => {
         ...lproduct,
         price: lproduct.price * 10**8
     }
-    console.log(finalProduct);
     let response = update_product(contract, finalProduct);
     console.log("FINAL RESPONSE:", response);
   };
