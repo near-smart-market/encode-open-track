@@ -94,6 +94,7 @@ async function initContract() {
         "schedule_order",
         "cancel_order",
         "complete_order",
+        "buy_ft",
       ],
       // Sender is the account ID to initialize transactions.
       // getAccountId() will return empty string if user is still unauthorized

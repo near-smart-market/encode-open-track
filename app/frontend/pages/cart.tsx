@@ -34,7 +34,7 @@ const Cart: NextPage = () => {
   const handleBuy = async () => {
     console.log("Now Handle Buy");
     if (total > mydetails.balance) {
-      alert("You don't have enough USDT Balance to place a purchase order.");
+      alert("You don't have enough NEAR-SMT to place a purchase order.");
       return;
     }
     // Get All Products
@@ -131,9 +131,9 @@ const Cart: NextPage = () => {
                             <img
                               src={product.media_url}
                               alt={product.name}
-                              className="w-5 h-5 mr-2"
+                              className="w-6 h-6 mr-2"
                             ></img>
-                            <span className="z-75 bg-gray-900 px-3 rounded">
+                            <span className="z-75 px-3 rounded">
                               {product.name}
                             </span>
                           </td>

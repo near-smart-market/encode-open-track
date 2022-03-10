@@ -336,7 +336,7 @@ export const GlobalContextWrapper = ({ children }: any) => {
       const response = await usdtContract?.ft_balance_of({
         account_id: currentUser?.accountId, // argument name and value - pass empty object if no args required
       });
-      console.log("USDT Balance: ", response / 10 ** 8);
+      console.log("NEAR-SMT: ", response / 10 ** 8);
       if (response !== null || response !== undefined) {
         setMyDetails({
           ...myDetails,
