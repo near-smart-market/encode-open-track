@@ -49,7 +49,7 @@ const StoreView = () => {
               id={product.id}
               name={product.name}
               price={product.price}
-              currency={"USDT"}
+              currency={"NEAR-SMT"}
               description={product.description}
               media_url={product.media_url}
               store_account_id={product.store_account_id}
