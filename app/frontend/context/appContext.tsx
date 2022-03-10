@@ -76,7 +76,7 @@ export const update_product = async (
   console.log("IN CONTEXT:", product);
   const response = await contract.update_product({
     args: {
-      id: product.id,
+      product_id: product.id,
       store_account_id: product.store_account_id,
       description: product.description,
       media_url: product.media_url,
