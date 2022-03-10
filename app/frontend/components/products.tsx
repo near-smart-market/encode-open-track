@@ -36,7 +36,7 @@ const Products = () => {
               name={product.name}
               inventory={product.inventory}
               price={product.price}
-              currency={"USDT"}
+              currency={"NEAR-SMT"}
               slides={product.slides}
               description={product.description}
               media_url={product.media_url}

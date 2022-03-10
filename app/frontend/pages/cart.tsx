@@ -63,7 +63,7 @@ const Cart: NextPage = () => {
         store_account_id: shop,
         status: "PENDING",
         payload: {
-          token: "usdt.test.near",
+          token: "NEAR-SMT",
           amount: (total * 10 ** 8).toString(),
           line_items: orderItemsMap[shop].map((prod: any) => {
             return { count: 1, product_id: prod.id };
@@ -143,7 +143,7 @@ const Cart: NextPage = () => {
 
                           <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-100">
                             {product.price / 10 ** 8}{" "}
-                            {product.currency || "USDT"}
+                            {product.currency || "NEAR-SMT"}
                           </td>
                           <td className="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">
                             <button
@@ -174,7 +174,7 @@ const Cart: NextPage = () => {
       {cart.length >= 1 && (
         <div className="w-4/5 flex flex-col justify-end items-end">
           <p className="text-right font-bold text-xl">
-            Total Amount: {total} {cart[0].currency || "USDT"}
+            Total Amount: {total} {cart[0].currency || "NEAR-SMT"}
           </p>
           <button
             className="text-white bg-gray-900 rounded p-3 mt-3"

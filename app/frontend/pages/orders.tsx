@@ -66,7 +66,7 @@ const Orders = () => {
                         Description: {order.description}
                       </p>
                       <p className="text-xl font-bold">
-                        Price: {order.price / 10 ** 8} USDT
+                        Price: {order.price / 10 ** 8} NEAR-SMT
                       </p>
                     </div>
                   );
@@ -98,7 +98,7 @@ const Orders = () => {
                     <p className="text-xl font-bold">Name: {order.name}</p>
                     <p className="text-xl">Description: {order.description}</p>
                     <p className="text-xl font-bold">
-                      Price: {order.price / 10 ** 8} USDT
+                      Price: {order.price / 10 ** 8} NEAR-SMT
                     </p>
                   </div>
                 );
