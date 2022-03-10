@@ -96,7 +96,7 @@ impl Marketplace {
       log!("This contract expects atleast 1 NEAR in deposit, but will only give you 100 NEAR-SMT. Use at your own risk. :) ");
       assert_eq!(env::attached_deposit() >= 1000000000000000000000000, true);
       let account_id = env::signer_account_id();
-      let amount_in_ft: String = String::from("100000000");
+      let amount_in_ft: String = String::from("10000000000");
       transfer_funds(&self.ft_contract_name, amount_in_ft, account_id);
   }
 }

@@ -37,6 +37,10 @@ const Orders = () => {
     })();
   }, []);
 
+  useEffect(() => {
+    console.log(sorders, uorders);
+  }, [sorders, uorders]);
+
   return (
     <div className="min-h-screen flex flex-col justify-start align-center">
       <div className="flex flex-col justify-center items-center">
@@ -53,7 +57,7 @@ const Orders = () => {
                       className="shadow-sm shadow-black p-3 flex flex-col justify-center items-center"
                     >
                       {/* <p>{JSON.stringify(order)}</p> */}
-                      <Image src={order.media_url} width={300} height={300} />
+                      {/* <Image src={order.media_url} width={300} height={300} /> */}
                       <p className="text-xl font-bold">
                         Product ID: {order.id}
                       </p>
@@ -62,7 +66,7 @@ const Orders = () => {
                         Description: {order.description}
                       </p>
                       <p className="text-xl font-bold">
-                        Price: {order.price / 10**8} USDT
+                        Price: {order.price / 10 ** 8} USDT
                       </p>
                     </div>
                   );
@@ -89,12 +93,12 @@ const Orders = () => {
                     className="shadow-sm shadow-black p-3 flex flex-col justify-center items-center"
                   >
                     {/* <p>{JSON.stringify(order)}</p> */}
-                    <Image src={order.media_url} width={300} height={300} />
+                    {/* <Image src={order.media_url} width={300} height={300} /> */}
                     <p className="text-xl font-bold">Product ID: {order.id}</p>
                     <p className="text-xl font-bold">Name: {order.name}</p>
                     <p className="text-xl">Description: {order.description}</p>
                     <p className="text-xl font-bold">
-                      Price: {order.price / 10**8} USDT
+                      Price: {order.price / 10 ** 8} USDT
                     </p>
                   </div>
                 );

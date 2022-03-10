@@ -24,10 +24,20 @@ pub(crate) fn transfer_funds(contract_id: &AccountId, amount: String, recipient_
         "receiver_id": recipient_id,
         "amount": amount
     }).to_string().into();
+
+    let storage_deposit_data = json!({
+        "account_id": recipient_id
+    }).to_string().into();
+
     Promise::new(contract_id.clone()).function_call(
+        b"storage_deposit".to_vec(),
+        storage_deposit_data, 
+        u128::pow(10, 22), // 0.01 Near
+        BASIC_GAS
+    ).then(Promise::new(contract_id.clone()).function_call(
         method_name,
         data, 
         1, // MIN_AMOUNT
         BASIC_GAS
-    )
+    ))
 }
