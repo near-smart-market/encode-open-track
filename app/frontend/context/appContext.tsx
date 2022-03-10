@@ -165,9 +165,9 @@ export const get_store_orders = async (
   accountId: any,
   store_account_id: any
 ) => {
-  const response = await contract.list_store_products({
+  const response = await contract.list_store_orders({
     account_id: accountId,
-    id: store_account_id,
+    store_account_id: store_account_id,
   });
   // console.log("response", response);
   return response;

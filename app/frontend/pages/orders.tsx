@@ -1,12 +1,17 @@
 import {
+  cancel_order,
+  complete_order,
   get_store_orders,
   get_user_orders,
+  schedule_order,
   useGlobalContext,
 } from "../context/appContext";
 import { useWalletContext } from "../context/walletContext";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "../components/button";
+
 const Orders = () => {
   const { contract, currentUser } = useWalletContext();
   const {
@@ -41,6 +46,45 @@ const Orders = () => {
     console.log(sorders, uorders);
   }, [sorders, uorders]);
 
+  const getStatus = (tag: string) => {
+    switch (tag) {
+      case "PENDING":
+        return (
+          <div className="ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-orange-200 text-orange-700 rounded-full">
+            <p>Pending</p>
+          </div>
+        );
+        break;
+      case "COMPLTED":
+        return (
+          <div className="ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-green-200 text-green-700 rounded-full">
+            <p>Completed</p>
+          </div>
+        );
+        break;
+      case "CANCELLED":
+        return (
+          <div className="ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-red-200 text-red-700 rounded-full">
+            <p>Cancelled</p>
+          </div>
+        );
+        break;
+    }
+  };
+
+  const schedule = async (orderId: string) => {
+    console.log(orderId);
+    await schedule_order(contract, currentUser?.accountId, orderId);
+  }
+
+  const complete = async (orderId: string) => {
+    await complete_order(contract, currentUser?.accountId, orderId);
+  }
+
+  const cancel = async (orderId: string) => {
+    await cancel_order(contract, currentUser?.accountId, orderId);
+  }
+
   return (
     <div className="min-h-screen flex flex-col justify-start align-center">
       <div className="flex flex-col justify-center items-center">
@@ -56,18 +100,42 @@ const Orders = () => {
                       key={order.id}
                       className="shadow-sm shadow-black p-3 flex flex-col justify-center items-center"
                     >
-                      {/* <p>{JSON.stringify(order)}</p> */}
-                      {/* <Image src={order.media_url} width={300} height={300} /> */}
+                      <p className="text-xl font-bold">Order ID: {order.id}</p>
                       <p className="text-xl font-bold">
-                        Product ID: {order.id}
+                        Buyer: {order.customer_account_id}
                       </p>
-                      <p className="text-xl font-bold">Name: {order.name}</p>
-                      <p className="text-xl">
-                        Description: {order.description}
-                      </p>
+                      <p className="text-xl">Description</p>
+                      <div className="flex justify-between w-full">
+                        <p className="font-bold">Product ID</p>
+                        <p className="font-bold">Count</p>
+                      </div>
+                      {order.payload.line_items.map((item: any) => {
+                        return (
+                          <div className="flex justify-between w-full">
+                            <p>{item.product_id}</p>
+                            <p>{item.count}</p>
+                          </div>
+                        );
+                      })}
                       <p className="text-xl font-bold">
-                        Price: {order.price / 10 ** 8} NEAR-SMT
+                        Price: {order.payload.amount / 10 ** 8} NEAR-SMT
                       </p>
+                      <p>Status: {getStatus(order.status)}</p>
+                      <div className="w-full">
+                        <p className="text-xl font-bold">Actions</p>
+                        <div className="flex justify-between flex-wrap w-full py-3">
+                          <Button type="INFO" onClick={() => schedule(order.id)}>
+                            <p>Schedule</p>
+                          </Button>
+                          <Button type="SUCCESS"  onClick={() => complete(order.id)}>
+                            <p>Complete</p>
+                          </Button>
+                          <Button type="DANGER"  onClick={() => cancel(order.id)}>
+                            <p>Cancel</p>
+                          </Button>
+
+                        </div>
+                      </div>
                     </div>
                   );
                 })
@@ -92,14 +160,27 @@ const Orders = () => {
                     key={order.id}
                     className="shadow-sm shadow-black p-3 flex flex-col justify-center items-center"
                   >
-                    {/* <p>{JSON.stringify(order)}</p> */}
-                    {/* <Image src={order.media_url} width={300} height={300} /> */}
-                    <p className="text-xl font-bold">Product ID: {order.id}</p>
-                    <p className="text-xl font-bold">Name: {order.name}</p>
-                    <p className="text-xl">Description: {order.description}</p>
+                    <p className="text-xl font-bold">Order ID: {order.id}</p>
                     <p className="text-xl font-bold">
-                      Price: {order.price / 10 ** 8} NEAR-SMT
+                      Invoiced to: {order.customer_account_id}
                     </p>
+                    <p className="text-xl">Description</p>
+                    <div className="flex justify-between w-full">
+                      <p className="font-bold">Product ID</p>
+                      <p className="font-bold">Count</p>
+                    </div>
+                    {order.payload.line_items.map((item: any) => {
+                      return (
+                        <div className="flex justify-between w-full">
+                          <p>{item.product_id}</p>
+                          <p>{item.count}</p>
+                        </div>
+                      );
+                    })}
+                    <p className="text-xl font-bold">
+                      Price: {order.payload.amount / 10 ** 8} NEAR-SMT
+                    </p>
+                    <p>Status: {getStatus(order.status)}</p>
                   </div>
                 );
               })
