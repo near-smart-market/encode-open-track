@@ -33,7 +33,7 @@ impl Marketplace {
         );
         self.finalize_cancel_order(order_id);
         // Transfer funds back from marketplace contract to customer
-        let contract_id: AccountId = AccountId::from(order.payload.token);
+        let contract_id: AccountId = AccountId::from(&self.ft_contract_name);
         transfer_funds(
             &contract_id,
             order.payload.amount,
@@ -109,7 +109,7 @@ impl Marketplace {
         self.finalize_complete_order(order_id);
 
         // Transfer funds back from marketplace contract to store
-        let contract_id: AccountId = AccountId::from(order.payload.token);
+        let contract_id: AccountId = AccountId::from(&self.ft_contract_name);
         transfer_funds(
             &contract_id,
             order.payload.amount,
