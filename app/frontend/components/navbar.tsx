@@ -13,7 +13,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 const Navbar = () => {
   const [loggedIn, setLoggedIn] = React.useState(false);
-
+  const toastId = React.useRef<any>(null);
   const { cart, mydetails } = useGlobalContext();
   const {
     walletConnection,
@@ -28,7 +28,14 @@ const Navbar = () => {
 
   useEffect(() => {
     if (loggedIn && mydetails && mydetails.balance == 0){
-      toast("Your NEAR-SMT balance is 0. You can buy some tokens using '$' icon.");
+      toastId.current = toast("Your NEAR-SMT balance is 0. You can buy some tokens using '$' icon.", {
+        delay: 15000,
+        toastId: "Your NEAR-SMT balance"
+      });
+    }
+    else if (loggedIn && mydetails && mydetails.balance > 0 && toastId && toastId.current){
+      // toast.dismiss(toastId.current)
+      toast.update(toastId.current, { delay: Number.MAX_SAFE_INTEGER });// delay this indefinitely
     }
   }, [mydetails, loggedIn])
 
