@@ -128,7 +128,7 @@ export type Order = {
   id: string;
   customer_account_id: string;
   store_account_id: string;
-  status: "PENDING" | "COMPLETED" | "CANCELLED";
+  status: "SCHEDULED" | "PENDING" | "COMPLETED" | "CANCELLED";
   payload: {
     token: string;
     amount: string;
@@ -205,13 +205,13 @@ export const schedule_order = async (
   const response = await contract.schedule_order({
     args: {
       store_account_id: store_account_id,
-      order_id: orderId,
+      order_id: `${store_account_id}:${orderId}`,
     },
     gas: ATTACHED_GAS,
     amount: "1",
     meta: "schedule_order",
   });
-  // console.log("response", { response });
+  console.log("response", { response });
   return response;
 };
 
@@ -224,12 +224,13 @@ export const complete_order = async (
   const response = await contract.complete_order({
     args: {
       store_account_id: store_account_id,
-      order_id: orderId,
+      order_id: `${store_account_id}:${orderId}`,
     },
     gas: ATTACHED_GAS,
     amount: "1",
     meta: "complete_order",
   });
+  console.log("response", { response });
   return response;
 };
 
@@ -242,12 +243,13 @@ export const cancel_order = async (
   const response = await contract.cancel_order({
     args: {
       store_account_id: store_account_id,
-      order_id: orderId,
+      order_id: `${store_account_id}:${orderId}`,
     },
     gas: ATTACHED_GAS,
     amount: "1",
     meta: "cancel_order",
   });
+  console.log("response", { response });
   return response;
 };
 

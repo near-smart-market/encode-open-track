@@ -55,7 +55,14 @@ const Orders = () => {
           </div>
         );
         break;
-      case "COMPLTED":
+      case "SCHEDULED":
+        return (
+          <div className="ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-blue-200 text-blue-700 rounded-full">
+            <p>Scheduled</p>
+          </div>
+        );
+        break;
+      case "COMPLETED":
         return (
           <div className="ml-4 text-xs inline-flex items-center font-bold leading-sm uppercase px-3 py-1 bg-green-200 text-green-700 rounded-full">
             <p>Completed</p>
@@ -124,15 +131,24 @@ const Orders = () => {
                       <div className="w-full">
                         <p className="text-xl font-bold">Actions</p>
                         <div className="flex justify-between flex-wrap w-full py-3">
-                          <Button type="INFO" onClick={() => schedule(order.id)}>
-                            <p>Schedule</p>
-                          </Button>
-                          <Button type="SUCCESS"  onClick={() => complete(order.id)}>
-                            <p>Complete</p>
-                          </Button>
-                          <Button type="DANGER"  onClick={() => cancel(order.id)}>
-                            <p>Cancel</p>
-                          </Button>
+                          {
+                            order.status == "PENDING" && order.store_account_id == contract?.account.accountId &&
+                            <Button type="INFO" onClick={() => schedule(order.id)}>
+                              <p>Schedule</p>
+                            </Button>
+                          }
+                          {
+                            order.status == "SCHEDULED" && order.store_account_id == contract?.account.accountId &&
+                            <Button type="SUCCESS" onClick={() => complete(order.id)}>
+                              <p>Complete</p>
+                            </Button>
+                          }
+                          {
+                            ["COMPLETED", "CANCELLED"].every(status => status != order.status) && 
+                            <Button type="DANGER" onClick={() => cancel(order.id)}>
+                              <p>Cancel</p>
+                            </Button>
+                          }
 
                         </div>
                       </div>
