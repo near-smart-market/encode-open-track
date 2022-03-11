@@ -142,6 +142,7 @@ const WalletContextWrapper = ({ children }: any) => {
   const [usdtContract, setUsdtContract] = useState<Contract>();
   const [currentUser, setCurrentUser] = useState<CurrentUser>();
   const [nearConfig, setNearConfig] = useState<any>();
+  // const [ loggedIn, setLoggedIn ] = useState(false);
 
   useEffect(() => {
     // setKeyStore(new keyStores.BrowserLocalStorageKeyStore());
@@ -154,16 +155,7 @@ const WalletContextWrapper = ({ children }: any) => {
       setCurrentUser(currentUser);
       setNearConfig(nearConfig);
       setUsdtContract(usdtContract);
-      // signIn(walletConnection, contract, nearConfig);
-      if (walletConnection.isSignedIn()) {
-        console.log("User is Signed In.");
-      } else {
-        alert("Please Sign in To use Nearbay.");
-        signIn(walletConnection, contract, nearConfig);
-      }
       setLoading(false);
-
-      // walletSignIn(walletConnection, nearConfig.contractName);
     })();
   }, []);
 
