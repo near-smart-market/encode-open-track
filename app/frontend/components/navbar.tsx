@@ -82,14 +82,14 @@ const Navbar = () => {
                 <a
                   className="flex items-center hover:text-gray-200"
                   href="#"
-                  onClick={() => signIn(walletConnection, contract, nearConfig)}
+                  onClick={() => signIn(walletConnection as any, contract, nearConfig)}
                 >
                   <UserIcon />
                 </a>
               ) : (
                 <button
                   className="hover:bg-white hover:text-black pl-5 pr-5 rounded"
-                  onClick={() => signOut(walletConnection)}
+                  onClick={() => signOut(walletConnection as any)}
                 >
                   Logout
                 </button>

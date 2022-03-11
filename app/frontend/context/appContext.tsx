@@ -258,7 +258,7 @@ let initObject = {
   marketplace: {
     stores: Array<StoreDetails>(),
     products: Array<ProductDetails>(),
-  },
+  } as MarketplaceProps,
   mydetails: {
     balance: 0,
   },
@@ -302,7 +302,7 @@ export const GlobalContextWrapper = ({ children }: any) => {
 
       console.log(store_data);
 
-      let stores = await contract?.list_stores({
+      let stores = await (contract as any)?.list_stores({
         account_id: currentUser?.accountId,
       });
       // console.log(stores);
@@ -335,7 +335,7 @@ export const GlobalContextWrapper = ({ children }: any) => {
       }
 
       //Check my usdt Balance
-      const response = await usdtContract?.ft_balance_of({
+      const response = await (usdtContract as any)?.ft_balance_of({
         account_id: currentUser?.accountId, // argument name and value - pass empty object if no args required
       });
       console.log("NEAR-SMT: ", response / 10 ** 8);

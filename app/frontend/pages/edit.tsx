@@ -50,7 +50,7 @@ const Add = () => {
       price: parseInt((parseFloat(product.pprice) * 10 ** 8).toString()),
       media_url: product.pmedia,
       name: product.pname,
-    };
+    } as any;
     console.log(finalProduct);
     create_product(contract, finalProduct);
   };
@@ -95,8 +95,8 @@ const Add = () => {
       name: lsstore.name,
       address: lsstore.address,
       lat_lng: {
-        longitude: parseFloat(lsstore.lat_lng.longitude),
-        latitude: parseFloat(lsstore.lat_lng.latitude)
+        longitude: parseFloat(lsstore.lat_lng.longitude as any),
+        latitude: parseFloat(lsstore.lat_lng.latitude as any)
       },
       id: currentUser?.accountId
     }

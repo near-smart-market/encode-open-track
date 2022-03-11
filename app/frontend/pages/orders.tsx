@@ -15,7 +15,7 @@ import { Button } from "../components/button";
 const Orders = () => {
   const { contract, currentUser } = useWalletContext();
   const {
-    marketplace: { selfStore },
+    marketplace: { stores, products },
     setMarketplace,
   } = useGlobalContext();
 
@@ -96,7 +96,7 @@ const Orders = () => {
     <div className="min-h-screen flex flex-col justify-start align-center">
       <div className="flex flex-col justify-center items-center">
         <h1 className="text-2xl font-bold my-3">Orders</h1>
-        {selfStore ? (
+        {stores ? (
           <div className="container">
             <p className="text-xl font-bold">Your Store Orders:</p>
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 grid-cols-1 my-2">
