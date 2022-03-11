@@ -22,7 +22,7 @@ const Cart: NextPage = () => {
       cart.reduce(
         (prev, next) => {
           return {
-            price: parseFloat(prev.price.toString()) + parseFloat(next.price),
+            price: parseFloat(prev.price.toString()) + next.price,
           };
         },
         { price: 0.0 }
@@ -59,7 +59,7 @@ const Cart: NextPage = () => {
     shops.map((shop: any) => {
       orders.push({
         id: `${shop}-${parseInt((Math.random() * 10000).toString())}`,
-        customer_account_id: currentUser.accountId,
+        customer_account_id: currentUser ? currentUser.accountId : "",
         store_account_id: shop,
         status: "PENDING",
         payload: {
@@ -77,7 +77,7 @@ const Cart: NextPage = () => {
       alert(order.id);
       const response = await create_order(
         usdtContract,
-        contract?.contractId,
+        contract?.contractId as any,
         order
       );
       console.log(response);

@@ -13,8 +13,8 @@ const StoreView = () => {
 
   const { contract, currentUser } = useWalletContext();
   const {
-      setCart,
-      cart
+    setCart,
+    cart
   } = useGlobalContext();
 
   const [store_products, setStoreProducts] = useState<Array<any>>([]);
@@ -53,7 +53,8 @@ const StoreView = () => {
               description={product.description}
               media_url={product.media_url}
               store_account_id={product.store_account_id}
-              handleCartAdd={handleCartAdd}
+              handleCartAdd={handleCartAdd} inventory={0}
+              slides={[]}
             />
           );
         })}

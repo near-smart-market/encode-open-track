@@ -1,4 +1,3 @@
-import { useAppSelector } from "../hooks";
 import ProductCard from "../components/product_card";
 import { useGlobalContext } from "../context/appContext";
 import { useWalletContext } from "../context/walletContext";
