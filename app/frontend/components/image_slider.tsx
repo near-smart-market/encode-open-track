@@ -63,7 +63,7 @@ const ImageSlider: React.FC<Props> = ({ slides, media_url }) => {
                       className="w-64 h-64 border rounded-full mx-auto mb-10 overflow-hidden bg-cover bg-center hover:cursor-pointer"
                       onClick={handleFullImageClick}
                     >
-                      <Image
+                      <img
                         src={lslides[active].img}
                         alt={lslides[active].title}
                         height={300}
@@ -84,7 +84,7 @@ const ImageSlider: React.FC<Props> = ({ slides, media_url }) => {
             <div
               className="w-64 h-64 border rounded-full mx-auto mb-10 overflow-hidden bg-cover bg-center hover:cursor-pointer"
             >
-              <Image
+              <img
                 src={media_url}
                 alt="Product Image"
                 height={300}
