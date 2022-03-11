@@ -13,8 +13,10 @@ import { ToastContainer, toast } from 'react-toastify';
 
 const Navbar = () => {
   const [loggedIn, setLoggedIn] = React.useState(false);
-  const toastId = React.useRef<any>(null);
   const { cart, mydetails } = useGlobalContext();
+
+  const [toastDispatch, setToastDispatch] = React.useState<any>();
+
   const {
     walletConnection,
     contract,
@@ -27,37 +29,41 @@ const Navbar = () => {
   });
 
   useEffect(() => {
-    if (loggedIn && mydetails && mydetails.balance == 0){
-      toastId.current = toast("Your NEAR-SMT balance is 0. You can buy some tokens using '$' icon.", {
-        delay: 15000,
-        toastId: "Your NEAR-SMT balance"
-      });
-    }
-    else if (loggedIn && mydetails && mydetails.balance > 0 && toastId && toastId.current){
+    if (mydetails.balance > 0) {
       // toast.dismiss(toastId.current)
-      toast.update(toastId.current, { delay: Number.MAX_SAFE_INTEGER });// delay this indefinitely
+      clearTimeout(toastDispatch);
     }
-  }, [mydetails, loggedIn])
+    else {
 
-  return (
-    <div className="flex flex-wrap place-items-center w-full">
-      <section className="relative mx-auto w-full">
-        {/* <!-- navbar --> */}
-        {
-          loggedIn &&
-          <LoggedInNavbar
-            mydetails={mydetails}
-            contract={contract}
-            loggedIn={loggedIn}
-            cart={cart}
-            nearConfig={nearConfig}
-            walletConnection={walletConnection}
-          />
-        }
-      </section>
-      <ToastContainer />
-    </div>
-  );
+      const disp = setTimeout(() => {
+        toast("Your NEAR-SMT balance is 0. You can buy some tokens using '$' icon.");
+      }, 15000);
+      if (toastDispatch) {
+        clearInterval(toastDispatch);
+      }
+      setToastDispatch(disp);
+}
+  }, [mydetails.balance]);
+
+return (
+  <div className="flex flex-wrap place-items-center w-full">
+    <section className="relative mx-auto w-full">
+      {/* <!-- navbar --> */}
+      {
+        loggedIn &&
+        <LoggedInNavbar
+          mydetails={mydetails}
+          contract={contract}
+          loggedIn={loggedIn}
+          cart={cart}
+          nearConfig={nearConfig}
+          walletConnection={walletConnection}
+        />
+      }
+    </section>
+    <ToastContainer />
+  </div>
+);
 };
 
 function LoggedInNavbar(props: any) {

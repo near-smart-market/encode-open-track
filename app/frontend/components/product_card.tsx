@@ -62,11 +62,11 @@ const ProductCard: FC<Props> = ({
             <span className="uppercase bg-blue-500 text-white font-bold p-2 text-xs shadow rounded">
               {price / 10 ** 8} {currency}
             </span>
-            {inventory && (
+            {/* {inventory && (
               <span className="uppercase bg-yellow-800 text-gray-100 font-bold ml-2 p-2 text-xs shadow rounded">
                 stock: {inventory}
               </span>
-            )}
+            )} */}
           </div>
           <p className="text-gray-900 mt-4">{description}</p>
         </div>
