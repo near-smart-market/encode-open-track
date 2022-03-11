@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Contract, utils } from "near-api-js";
 import Heart from "../icons/heart";
 import ShoppingCart from "../icons/shopping_cart";
@@ -9,6 +9,7 @@ import { useWalletContext, signIn, signOut } from "../context/walletContext";
 
 import Link from "next/link";
 import { MULTISIG_GAS } from "near-api-js/lib/account_multisig";
+import { ToastContainer, toast } from 'react-toastify';
 
 const Navbar = () => {
   const [loggedIn, setLoggedIn] = React.useState(false);
@@ -24,6 +25,12 @@ const Navbar = () => {
   React.useEffect(() => {
     walletConnection?.isSignedIn() ? setLoggedIn(true) : setLoggedIn(false)
   });
+
+  useEffect(() => {
+    if (loggedIn && mydetails && mydetails.balance == 0){
+      toast("Your NEAR-SMT balance is 0. You can buy some tokens using '$' icon.");
+    }
+  }, [mydetails, loggedIn])
 
   return (
     <div className="flex flex-wrap place-items-center w-full">
@@ -41,6 +48,7 @@ const Navbar = () => {
           />
         }
       </section>
+      <ToastContainer />
     </div>
   );
 };

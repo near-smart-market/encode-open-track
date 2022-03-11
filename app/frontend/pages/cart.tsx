@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
 import type { NextPage } from "next";
+import { ToastContainer, toast } from 'react-toastify';
+
 
 import { create_order, Order, useGlobalContext } from "../context/appContext";
 import { useWalletContext } from "../context/walletContext";
 import Link from "next/link";
+import { mdiShoppingSearch } from "@mdi/js";
+import _ from "lodash";
+import { ProductDetails, ProductDetailsBC } from "../components/product_card";
 
 const Cart: NextPage = () => {
   const { cart, setCart, mydetails } = useGlobalContext();
 
   const { usdtContract, currentUser, contract } = useWalletContext();
-
-  const handleRemove = (id: string) => {
-    const newCart = cart.filter((prod) => prod.id !== id);
-    setCart([...newCart]);
-  };
 
   const [total, setTotal] = useState(0);
 
@@ -27,20 +27,47 @@ const Cart: NextPage = () => {
         },
         { price: 0.0 }
       ).price /
-        10 ** 8
+      10 ** 8
     );
   }, [cart]);
 
-  const handleBuy = async () => {
-    console.log("Now Handle Buy");
+  return (
+    <div className="min-h-screen flex flex-col items-center pt-4 pb-4">
+      {_.uniq(cart.map(c => c.store_account_id)).map(shop => (
+        <CartByStore
+          shop={shop}
+          cart={cart}
+          mydetails={mydetails}
+          currentUser={currentUser}
+          usdtContract={usdtContract}
+          contract={contract}
+        />
+      ))}
+    </div>
+  )
+};
+
+function CartByStore(props: any) {
+  const { cart, shop, mydetails, currentUser, contract, usdtContract } = props;
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    if (cart) {
+      setItems(cart.filter((c: any) => c.store_account_id == shop));
+    }
+  }, [cart]);
+
+  const handleBuy = async (cartItems: ProductDetailsBC[]) => {
+    const total = cartItems.map(i => i.price).reduce((a, b) => a + b, 0) / 1e8;
+    console.log("Now Handle Buy", total, mydetails);
     if (total > mydetails.balance) {
-      alert("You don't have enough NEAR-SMT to place a purchase order.");
+      toast("You don't have enough NEAR-SMT to place a purchase order.");
       return;
     }
     // Get All Products
     let shops: any = [];
     let orderItemsMap: any = {};
-    cart.map((prod) => {
+    cartItems.map((prod) => {
       !shops.includes(prod.store_account_id) &&
         shops.push(prod.store_account_id);
       if (orderItemsMap[prod.store_account_id]) {
@@ -64,7 +91,7 @@ const Cart: NextPage = () => {
         status: "PENDING",
         payload: {
           token: "NEAR-SMT",
-          amount: (total * 10 ** 8).toString(),
+          amount: (total * 1e8).toString(),
           line_items: orderItemsMap[shop].map((prod: any) => {
             return { count: 1, product_id: prod.id };
           }),
@@ -74,7 +101,6 @@ const Cart: NextPage = () => {
     console.log(orders);
     // Call Function on usdtContract
     orders.forEach(async (order) => {
-      alert(order.id);
       const response = await create_order(
         usdtContract,
         contract?.contractId as any,
@@ -84,11 +110,14 @@ const Cart: NextPage = () => {
     });
   };
 
-  return (
-    <div className="min-h-screen flex flex-col items-center pt-4 pb-4">
-      <p className="text-4xl font-bold mb-3">Cart</p>
+  const handleRemove = (id: string) => {
+    setItems([...items.filter((prod: ProductDetailsBC) => prod.id !== id)]);
+  };
 
-      {cart.length > 0 ? (
+  return (
+    <>
+
+      {items.length > 0 && (
         <div className="flex flex-col w-4/5">
           <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block py-2 min-w-full sm:px-6 lg:px-8">
@@ -121,7 +150,7 @@ const Cart: NextPage = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {cart.map((product) => {
+                    {items.map((product: ProductDetailsBC) => {
                       return (
                         <tr
                           className="border-b odd:bg-white even:bg-gray-50 odd:dark:bg-gray-800 even:dark:bg-gray-700 dark:border-gray-600"
@@ -142,8 +171,8 @@ const Cart: NextPage = () => {
                           </td>
 
                           <td className="py-4 px-6 text-sm text-gray-500 whitespace-nowrap dark:text-gray-100">
-                            {product.price / 10 ** 8}{" "}
-                            {product.currency || "NEAR-SMT"}
+                            {product.price / 1e8}{" "}
+                            {"NEAR-SMT"}
                           </td>
                           <td className="py-4 px-6 text-sm font-medium text-right whitespace-nowrap">
                             <button
@@ -162,30 +191,25 @@ const Cart: NextPage = () => {
             </div>
           </div>
         </div>
-      ) : (
-        <p>
-          Uh Oh! Cart is empty try adding something from the{" "}
-          <span className="text-blue-700">
-            <Link href="/">Marketplace</Link>
-          </span>
-        </p>
       )}
 
-      {cart.length >= 1 && (
+      {items.length >= 1 && (
         <div className="w-4/5 flex flex-col justify-end items-end">
           <p className="text-right font-bold text-xl">
-            Total Amount: {total} {cart[0].currency || "NEAR-SMT"}
+            Total Amount: {items.map((i: ProductDetailsBC) => i.price).reduce((a: number, b: number) => a + b, 0) / 1e8} {"NEAR-SMT"}
           </p>
           <button
             className="text-white bg-gray-900 rounded p-3 mt-3"
-            onClick={handleBuy}
+            onClick={() => handleBuy(items)}
           >
             Buy Now
           </button>
         </div>
       )}
-    </div>
-  );
-};
+
+      <ToastContainer />
+    </>
+  )
+}
 
 export default Cart;

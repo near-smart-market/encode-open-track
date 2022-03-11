@@ -132,7 +132,7 @@ const signIn = (wallet: WalletConnection, contract: any, config: any) => {
 
 const signOut = (wallet: WalletConnection) => {
   wallet.signOut();
-  window.location.replace(window.location.origin + window.location.pathname);
+  window.location.replace(window.location.origin);
 };
 
 const WalletContextWrapper = ({ children }: any) => {

@@ -335,15 +335,17 @@ export const GlobalContextWrapper = ({ children }: any) => {
       }
 
       //Check my usdt Balance
-      const response = await (usdtContract as any)?.ft_balance_of({
-        account_id: currentUser?.accountId, // argument name and value - pass empty object if no args required
-      });
-      console.log("NEAR-SMT: ", response / 10 ** 8);
-      if (response !== null || response !== undefined) {
-        setMyDetails({
-          ...myDetails,
-          balance: response / 10 ** 8,
+      if (currentUser && currentUser.accountId){
+        const response = await (usdtContract as any)?.ft_balance_of({
+          account_id: currentUser.accountId, // argument name and value - pass empty object if no args required
         });
+        console.log("NEAR-SMT: ", response / 10 ** 8);
+        if (response !== null || response !== undefined) {
+          setMyDetails({
+            ...myDetails,
+            balance: response / 10 ** 8,
+          });
+        }
       }
 
       setMarketplace({
