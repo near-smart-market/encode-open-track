@@ -318,7 +318,7 @@ export const GlobalContextWrapper = ({ children }: any) => {
             stores[i].id,
             currentUser?.accountId
           );
-          products = [...products, ...prods.map((prod, index) => {if(index < 5) return prod})];
+          products = [...products, ...prods.map((prod: any, index: number) => {if(index < 5) return prod})];
         }
       }
 
@@ -335,6 +335,7 @@ export const GlobalContextWrapper = ({ children }: any) => {
       }
 
       //Check My USDT Balance
+      // @ts-ignore
       const response = await usdtContract?.ft_balance_of({
         account_id: currentUser?.accountId, // argument name and value - pass empty object if no args required
       });
