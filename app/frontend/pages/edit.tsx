@@ -41,7 +41,7 @@ const Add = () => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    console.log(product);
+    // console.log(product);
     let finalProduct: ProductDetailsBC = {
       description: product.pdesc,
       id: product.pid,
@@ -50,8 +50,8 @@ const Add = () => {
       price: parseInt((parseFloat(product.pprice) * 10 ** 8).toString()),
       media_url: product.pmedia,
       name: product.pname,
-    } as any;
-    console.log(finalProduct);
+    };
+    // console.log(finalProduct);
     create_product(contract, finalProduct);
   };
 
@@ -192,13 +192,6 @@ const Add = () => {
                     </label>
                   </div>
                 </div>
-
-                {/* <button
-                type="submit"
-                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              >
-                Edit Store Details
-              </button> */}
               </form>
             </div>
           </div>
@@ -288,13 +281,6 @@ const Add = () => {
                     Create a new Shop
                   </button>
                 </div>
-
-                {/* <button
-                type="submit"
-                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-              >
-                Edit Store Details
-              </button> */}
               </form>
             </div>
           </div>

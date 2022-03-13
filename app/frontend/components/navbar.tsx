@@ -1,15 +1,18 @@
-import React, { useContext, useEffect } from "react";
-import { Contract, utils } from "near-api-js";
-import Heart from "../icons/heart";
+import React, { useEffect, useState } from "react";
+import { utils } from "near-api-js";
 import ShoppingCart from "../icons/shopping_cart";
 import UserIcon from "../icons/user_icon";
 
 import { useGlobalContext } from "../context/appContext";
 import { useWalletContext, signIn, signOut } from "../context/walletContext";
+import { useWindowSize } from "../hook/windowSize";
 
 import Link from "next/link";
 import { MULTISIG_GAS } from "near-api-js/lib/account_multisig";
 import { ToastContainer, toast } from 'react-toastify';
+
+import { mdiLineScan, mdiClose } from "@mdi/js";
+import Icon from "@mdi/react";
 
 const Navbar = () => {
   const [loggedIn, setLoggedIn] = React.useState(false);
@@ -25,7 +28,7 @@ const Navbar = () => {
   } = useWalletContext();
 
   React.useEffect(() => {
-    walletConnection?.isSignedIn() ? setLoggedIn(true) : setLoggedIn(false)
+    walletConnection?.isSignedIn() ? setLoggedIn(true) : setLoggedIn(false);
   });
 
   useEffect(() => {
@@ -172,16 +175,35 @@ function LoggedInNavbar(props: any) {
 
 function BuyFungibleTokenIcon({ contract, className }: any) {
   async function buyStablecoin() {
-    await contract.buy_ft({ args: {}, gas: MULTISIG_GAS, amount: utils.format.parseNearAmount("1"), meta: "buy_ft" });
+    await contract.buy_ft({
+      args: {},
+      gas: MULTISIG_GAS,
+      amount: utils.format.parseNearAmount("1"),
+      meta: "buy_ft",
+    });
   }
   return (
-    <a className={className} title="1 NEAR -> 100 NEAR-SMT" onClick={buyStablecoin}>
-      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+    <a
+      className={className}
+      title="1 NEAR -> 100 NEAR-SMT"
+      onClick={buyStablecoin}
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+        />
       </svg>
     </a>
   );
 }
-
 
 export default Navbar;
