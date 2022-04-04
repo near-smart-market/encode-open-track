@@ -13,8 +13,6 @@ export type ProductDetailsBC = {
   store_account_id: string;
   description: string;
   media_url: string;
-  inventory: number;
-  slides: Array<Slide>
 };
 
 export type ProductDetails = ProductDetailsBC & {

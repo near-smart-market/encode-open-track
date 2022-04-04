@@ -22,10 +22,10 @@ const View = () => {
                 key={product.id + product.name}
                 id={product.id}
                 name={product.name}
-                inventory={product.inventory}
+                inventory={undefined}
                 price={product.price}
                 currency={"NEAR-SMT"}
-                slides={product.slides}
+                slides={[]}
                 description={product.description}
                 store_account_id={product.store_account_id}
                 media_url={product.media_url}

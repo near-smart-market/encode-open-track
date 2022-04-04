@@ -318,7 +318,7 @@ export const GlobalContextWrapper = ({ children }: any) => {
             stores[i].id,
             currentUser?.accountId
           );
-          products = [...products, ...prods];
+          products = [...products, ...prods.map((prod: any, index: number) => {if(index < 5) return prod})];
         }
       }
 
@@ -334,10 +334,16 @@ export const GlobalContextWrapper = ({ children }: any) => {
         console.log(e);
       }
 
-      //Check my usdt Balance
-      if (currentUser && currentUser.accountId){
-        const response = await (usdtContract as any)?.ft_balance_of({
-          account_id: currentUser.accountId, // argument name and value - pass empty object if no args required
+      //Check My USDT Balance
+      // @ts-ignore
+      const response = await usdtContract?.ft_balance_of({
+        account_id: currentUser?.accountId, // argument name and value - pass empty object if no args required
+      });
+      console.log("NEAR-SMT: ", response / 10 ** 8);
+      if (response !== null || response !== undefined) {
+        setMyDetails({
+          ...myDetails,
+          balance: response / 10 ** 8,
         });
         console.log("NEAR-SMT: ", response / 10 ** 8);
         if (response !== null || response !== undefined) {
