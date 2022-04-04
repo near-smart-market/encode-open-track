@@ -28,7 +28,7 @@ const Products = () => {
   return (
     <div className="container">
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 grid-cols-1 p-2">
-        {products.map((product) => {
+        {products.filter(p => p).map((product) => {
           return (
             <ProductCard
               key={product.id + product.name}
