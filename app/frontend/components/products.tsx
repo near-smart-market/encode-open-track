@@ -20,7 +20,7 @@ const Products = () => {
 
   const handleCartAdd = (id: any) => {
     console.log(id);
-    const product = products.filter((product) => product.id === id)[0];
+    const product = products.filter((product) => product && product.id === id)[0];
     console.log(product);
     setCart([...cart, product]);
   };
