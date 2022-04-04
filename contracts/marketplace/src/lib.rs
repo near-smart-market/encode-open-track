@@ -55,6 +55,7 @@ impl Marketplace {
 
   // This is the entrypoint into actually creating an order
   // We must receive valid funds from the stablecoin contract to create the order
+  // FT::ft_transfer_call()
   pub fn ft_on_transfer(&mut self, sender_id: String, amount: String, msg: String) -> String {
     // assert that sender is usdt.test.near, we only support USDT for this POC
     assert_eq!(self.ft_contract_name, env::predecessor_account_id().to_string());
